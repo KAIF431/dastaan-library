@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dastaan | Sukoon-e-Dil | The Full Library</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;1,400&family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --deep-green: #032219;
+            --vintage-gold: #c5a059;
+            --soft-cream: #f4eee0;
+        }
+        body { 
+            background-color: var(--deep-green); 
+            font-family: 'Montserrat', sans-serif;
+            color: var(--soft-cream);
+        }
+        .serif { font-family: 'Bodoni Moda', serif; }
+        .gold-border { border-color: var(--vintage-gold); }
+        .gold-text { color: var(--vintage-gold); }
+        
+        /* Glassmorphism Effect */
+        .novel-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(197, 160, 89, 0.1);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .novel-card:hover {
+            border: 1px solid var(--vintage-gold);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+        }
+        .novel-card .read-btn {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+        .novel-card:hover .read-btn {
+            opacity: 1;
+            transform: translateY(0);
+
+        }
+.novel-card img {
+    width: 100%;          
+    height: 350px;     
+    object-fit: cover;    
+    object-position: center; 
+}
+    </style>
+
+</head>
+<body class="antialiased">
+
+    <nav class="p-8 flex justify-between items-center border-b border-white/5">
+        <div class="text-3xl serif italic gold-text tracking-widest uppercase">Dastaan</div>
+        <div class="hidden md:flex space-x-10 text-xs tracking-[0.2em] uppercase opacity-70">
+            <a href="#" class="hover:opacity-100 transition">Library</a>
+            <a href="#" class="hover:opacity-100 transition">Authors</a>
+            <a href="#" class="hover:opacity-100 transition">Our Soul</a>
+        </div>
+    </nav>
+
+    <section class="max-w-6xl mx-auto py-24 px-6 text-center">
+        <span class="text-xs uppercase tracking-[0.5em] gold-text opacity-80">Welcome to a New World</span>
+        <h1 class="text-6xl md:text-8xl serif italic mt-6 mb-8">Lafzon ki <span class="gold-text">Chashni</span></h1>
+        <p class="max-w-xl mx-auto opacity-60 font-light leading-relaxed">
+            Salar ki hidayat se Jihan ki maseehaai tak—ek aisi jagah jahan har panna ek nayi rooh se milwata hai.
+        </p>
+    </section>
+
+    <section class="max-w-7xl mx-auto px-6 pb-32">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+            
+            <div class="novel-card rounded-sm flex flex-col">
+                <div class="relative overflow-hidden group">
+                    <img src="images/peere_kamil.jpg" alt="Peer-e-Kamil Novel Cover" class="opacity-80 group-hover:scale-110 transition duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#032219] via-[#032219]/30 to-transparent"></div>
+                </div>
+                <div class="p-6 mt-auto text-center relative z-10">
+                    <h3 class="text-3xl serif italic gold-text">Peer-e-Kamil </h3>
+                    <p class="text-[10px] tracking-widest uppercase mt-2 opacity-60">Umera Ahmed</p>
+                    <p class="text-xs opacity-50 font-light italic mt-3 px-4 line-clamp-2">"The Perfect Man - Darkness to Light"</p>
+                    <a href="reading.html" class="read-btn mt-6 inline-block py-2 px-8 border border-vintage-gold gold-text text-xs tracking-widest uppercase font-bold hover:bg-vintage-gold hover:text-deep-green transition">Read Now</a>
+                </div>
+            </div>
+
+            <div class="novel-card rounded-sm flex flex-col">
+                <div class="relative overflow-hidden group">
+                    <img src="images/aabe-hayat.jpg" alt="Aab-e-Hayat Novel Cover" class="opacity-80 group-hover:scale-110 transition duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#032219] via-[#032219]/30 to-transparent"></div>
+                </div>
+                <div class="p-6 mt-auto text-center relative z-10">
+                    <h3 class="text-3xl serif italic gold-text">Aab-e-Hayat</h3>
+                    <p class="text-[10px] tracking-widest uppercase mt-2 opacity-60">Umera Ahmed</p>
+                    <p class="text-xs opacity-50 font-light italic mt-3 px-4 line-clamp-2">"Salar aur Imama: Legacy and Redemption"</p>
+                    <a href="aabehayat.html" class="read-btn mt-6 inline-block py-2 px-8 border border-vintage-gold gold-text text-xs tracking-widest uppercase font-bold hover:bg-vintage-gold hover:text-deep-green transition">Read Now</a>
+                </div>
+            </div>
+
+            <div class="novel-card rounded-sm flex flex-col">
+                <div class="relative overflow-hidden group">
+                    <img src="images/jkp.jpg" alt="Jannat ke Pattay Novel Cover" class="opacity-80 group-hover:scale-110 transition duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#032219] via-[#032219]/30 to-transparent"></div>
+                </div>
+                <div class="p-6 mt-auto text-center relative z-10">
+                    <h3 class="text-3xl serif italic gold-text">Jannat Ke Pattay</h3>
+                    <p class="text-[10px] tracking-widest uppercase mt-2 opacity-60">Nemrah Ahmed</p>
+                    <p class="text-xs opacity-50 font-light italic mt-3 px-4 line-clamp-2">"Haya and Jihan: Fate, Faith, and Turkey's Skies"</p>
+                    <a href="jkp.html" class="read-btn mt-6 inline-block py-2 px-8 border border-vintage-gold gold-text text-xs tracking-widest uppercase font-bold hover:bg-vintage-gold hover:text-deep-green transition">Read Now</a>
+                </div>
+            </div>
+
+            <div class="novel-card rounded-sm flex flex-col">
+                <div class="relative overflow-hidden group">
+                    <img src="images/namal.jpg" alt="Namal Novel Cover" class="opacity-80 group-hover:scale-110 transition duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#032219] via-[#032219]/30 to-transparent"></div>
+                </div>
+                <div class="p-6 mt-auto text-center relative z-10">
+                    <h3 class="text-3xl serif italic gold-text">Namal</h3>
+                    <p class="text-[10px] tracking-widest uppercase mt-2 opacity-60">Nemrah Ahmed</p>
+                    <p class="text-xs opacity-50 font-light italic mt-3 px-4 line-clamp-2">"Faris and Zumar: Intelligence meets Revenge"</p>
+                    <a href="namal.html" class="read-btn mt-6 inline-block py-2 px-8 border border-vintage-gold gold-text text-xs tracking-widest uppercase font-bold hover:bg-vintage-gold hover:text-deep-green transition">Read Now</a>
+                </div>
+            </div>
+
+           <div class="novel-card rounded-sm flex flex-col">
+    <div class="relative overflow-hidden group">
+        <img src="images/mushaf.jpg" alt="Mushaf Novel Cover" class="opacity-80 group-hover:scale-110 transition duration-700">
+        <div class="absolute inset-0 bg-gradient-to-t from-[#032219] via-[#032219]/30 to-transparent"></div>
+    </div>
+    <div class="p-6 mt-auto text-center relative z-10">
+        <h3 class="text-3xl serif italic gold-text">Mushaf</h3>
+        <p class="text-[10px] tracking-widest uppercase mt-2 opacity-60">Nemrah Ahmed</p>
+        <p class="text-xs opacity-50 font-light italic mt-3 px-4 line-clamp-2">"Mehmal Ibrahim: Life Changer & Spiritual Journey"</p>
+        <a href="mushaf.html" class="read-btn mt-6 inline-block py-2 px-8 border border-vintage-gold gold-text text-xs tracking-widest uppercase font-bold hover:bg-vintage-gold hover:text-deep-green transition">Read Now</a>
+    </div>
+</div>
+
+            <div class="novel-card rounded-sm flex flex-col">
+                <div class="relative overflow-hidden group">
+                    <img src="images/amarbail.jpg" alt="Amar Bail Novel Cover" class="opacity-80 group-hover:scale-110 transition duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#032219] via-[#032219]/30 to-transparent"></div>
+                </div>
+                <div class="p-6 mt-auto text-center relative z-10">
+                    <h3 class="text-3xl serif italic gold-text">Amar Bail</h3>
+                    <p class="text-[10px] tracking-widest uppercase mt-2 opacity-60">Umera Ahmed</p>
+                    <p class="text-xs opacity-50 font-light italic mt-3 px-4 line-clamp-2">"Umar Jehangir: Eternal, Unfulfilled Love"</p>
+                    <a href="amarbail.html" class="read-btn mt-6 inline-block py-2 px-8 border border-vintage-gold gold-text text-xs tracking-widest uppercase font-bold hover:bg-vintage-gold hover:text-deep-green transition">Read Now</a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <footer class="text-center py-24 border-t border-white/5 bg-[#021711]">
+        <p class="serif text-4xl italic opacity-80">"Ishq la-fani hai..."</p>
+        <p class="text-xs mt-6 uppercase tracking-[0.3em] opacity-40">Made with ❤️ for Soulful Readers</p>
+        <div class="mt-12 flex justify-center space-x-6">
+            <div class="w-2 h-2 rounded-full bg-gold-border opacity-20"></div>
+            <div class="w-2 h-2 rounded-full bg-gold-border opacity-50"></div>
+            <div class="w-2 h-2 rounded-full bg-gold-border opacity-20"></div>
+        </div>
+    </footer>
+
+</body>
+</html>
