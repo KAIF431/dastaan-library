@@ -51,3 +51,22 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     console.log("Dastaan Library Script Loaded Successfully!");
 });
+const searchInput = document.getElementById('searchInput');
+
+if (searchInput) {
+    searchInput.addEventListener('keyup', () => {
+        const filter = searchInput.value.toLowerCase();
+        const cards = document.querySelectorAll('.card'); // Check karo tumhare novel cards ki class 'card' hai ya nahi
+
+        cards.forEach(card => {
+            const title = card.querySelector('h3').innerText.toLowerCase();
+            const author = card.querySelector('p').innerText.toLowerCase();
+
+            if (title.includes(filter) || author.includes(filter)) {
+                card.style.display = ""; // Show card
+            } else {
+                card.style.display = "none"; // Hide card
+            }
+        });
+    });
+}
