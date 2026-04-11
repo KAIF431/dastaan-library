@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peer-e-Kamil | Summary Analysis | Dastaan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #001a14;
+            --vintage-gold: #c5a059;
+            --text-muted: rgba(197, 160, 89, 0.7);
+        }
+        body {
+            background: radial-gradient(circle at center, #002e24 0%, #001a14 100%);
+            color: var(--text-muted);
+            font-family: 'Lora', serif;
+            cursor: none;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+        /* Custom Professional Cursor */
+        .cursor-dot, .cursor-outline {
+            pointer-events: none;
+            position: fixed;
+            z-index: 9999;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .cursor-dot { width: 6px; height: 6px; background: var(--vintage-gold); }
+        .cursor-outline { width: 35px; height: 35px; border: 1.5px solid var(--vintage-gold); transition: all 0.1s ease-out; }
+
+        .gold-serif { 
+            font-family: 'Playfair Display', serif; 
+            color: var(--vintage-gold); 
+        }
+        
+        /* Reading Layout */
+        #readingArea, #fullSummary {
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 2.2;
+            text-align: justify;
+        }
+        .drop-cap::first-letter {
+            font-family: 'Playfair Display', serif;
+            font-size: 5rem;
+            float: left;
+            margin-right: 15px;
+            color: var(--vintage-gold);
+            line-height: 0.8;
+            margin-top: 10px;
+        }
+        /* Floating Back to Top Button */
+        #backToTop {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border: 1px solid var(--vintage-gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 26, 20, 0.8);
+            color: var(--vintage-gold);
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+            z-index: 1000;
+        }
+        #backToTop.show { 
+            opacity: 1; 
+            visibility: visible; 
+        }
+        #backToTop:hover { 
+            background: var(--vintage-gold); 
+            color: #001a14; 
+        }
+        /* Premium Expansion Button */
+        .btn-expand {
+            border: 1px solid rgba(197, 160, 89, 0.3);
+            background: transparent;
+            color: var(--vintage-gold);
+            padding: 18px 45px;
+            text-transform: uppercase;
+            letter-spacing: 0.4em;
+            font-size: 10px;
+            font-weight: bold;
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-expand:hover { 
+            color: #001a14; 
+            border-color: var(--vintage-gold); 
+        }
+        .btn-expand::before {
+            content: '';
+            position: absolute;
+            bottom: -100%; 
+            left: 0; 
+            width: 100%; 
+            height: 100%;
+            background: var(--vintage-gold);
+            transition: transform 0.5s ease;
+            z-index: -1;
+        }
+        .btn-expand:hover::before { 
+            transform: translateY(-100%); 
+        }
+        @media (max-width: 768px) {
+            .cursor-dot, .cursor-outline { display: none; }
+            body { cursor: auto; }
+            #readingArea, #fullSummary { text-align: left; }
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <nav class="sticky top-0 z-50 px-8 py-5 flex justify-between items-center bg-[#001a14]/90 backdrop-blur-xl border-b border-[#c5a059]/10">
+        <a href="index.html" class="text-[9px] tracking-[0.5em] uppercase opacity-50 hover:opacity-100 transition">← Back to Archive</a>
+        <div class="text-2xl gold-serif italic tracking-tighter">Dastaan</div>
+        <div class="flex space-x-4">
+            <button id="fontBtn" class="text-[9px] border border-[#c5a059]/30 px-3 py-1.5 hover:bg-[#c5a059] hover:text-[#001a14] transition uppercase tracking-widest">Type Size</button>
+            <button id="themeBtn" class="text-[9px] border border-[#c5a059]/30 px-3 py-1.5 hover:bg-[#c5a059] hover:text-[#001a14] transition uppercase tracking-widest">Invert Mode</button>
+        </div>
+    </nav>
+
+    <main class="py-24 px-6">
+        <header class="text-center mb-32">
+            <span class="text-[10px] tracking-[0.6em] uppercase opacity-40 block mb-6">Digital Portfolio Presentation</span>
+            <h1 class="text-6xl md:text-8xl gold-serif italic mb-6">Peer-e-Kamil</h1>
+            <p class="text-xs tracking-[0.3em] uppercase opacity-60">Umera Ahmed • Detailed Narrative Review</p>
+            <div class="h-[1px] w-24 bg-[#c5a059]/20 mx-auto mt-12"></div>
+        </header>
+       
+        <article id="readingArea" class="drop-cap text-xl md:text-2xl space-y-12 mb-12">
+            <p>
+                <strong>“Peer-e-Kamil”</strong> ek roohani, emotional aur deeply philosophical novel hai jo do main characters — <strong>Imama Hashim aur Salar Sikander</strong> — ki zindagi ke zariye hidayat (guidance), imaan, aur self-discovery ka safar dikhata hai. Yeh sirf ek love story nahi hai, balki ek aisi journey hai jahan insaan apni ghaltiyon, confusion aur duniya ki chamak-dhamak se nikal kar asal sachai tak pohanchta hai.
+            </p>
+            
+            <div class="space-y-8">
+                <h2 class="gold-serif text-3xl italic border-b border-[#c5a059]/20 pb-2">* Salar Sikander: Ek Genius ki Bhatkan</h2>
+                <p>
+                    Salar Sikander ka IQ level 150+ tha. Woh ek brilliant student tha, lekin morally bilkul bhatka hua. Arrogance, addiction, aur meaningless relationships uski pehchan thi. Uske liye zindagi sirf ek khel thi, jab tak uski mulaqat Imama se nahi hui aur usne Imama ki madad karne ka faisla kiya.
+                </p>
+            </div>
+            
+            <div class="space-y-8">
+                <h2 class="gold-serif text-3xl italic border-b border-[#c5a059]/20 pb-2">* Imama Hashim: Azmaish aur Realization</h2>
+                <p>
+                    Imama Hashim ek intelligent, religious-minded ladki hai. Jab usay apne beliefs par doubts hone lagte hain, toh woh Quran aur Islamic teachings ka gehra mutala karti hai. Yeh realization uske liye dardnak tha ke usay haq ke liye apne parivar ke khilaf jaana padega. Usne secretly Islam accept kiya, jo uski zindagi ka sabse bada turning point bana.
+                </p>
+            </div>
+        </article>
+
+        <div class="py-12 px-8 bg-[#c5a059]/5 border-y border-[#c5a059]/10 text-center my-16">
+            <p class="gold-serif text-3xl italic mb-4">"Hidayat unhi ko milti hai jo talash-e-haq mein nikalte hain."</p>
+            <p class="text-xs tracking-[0.4em] uppercase opacity-50">— Peer-e-Kamil...</p>
+        </div>
+
+        <!-- Full Summary Section -->
+        <div id="fullSummary" class="max-h-0 overflow-hidden opacity-0 transition-all duration-1000 ease-in-out space-y-12 text-xl md:text-2xl border-t border-[#c5a059]/10 pt-12 mt-12">
+            
+            <h3 class="gold-serif text-3xl italic">>>> Forced Marriage aur Escape</h3>
+            <p>Is daur ke dauran Imama ko ek gehra ehsaas hota hai ke jo beliefs uski family follow karti hai, woh uske nazdeek haq nahi hain. Yeh ehsaas uske liye intehai takleef-deh hota hai, kyunki iska matlab hai ke usay apne hi ghar walon ke khilaf kharay hona padega.</p>
+            <p>👉 Yahan ek bohot aham waqia hota hai</p>
+            <p>Imama chupke se Sunni Islam qabool kar leti hai — yeh faisla uski zindagi ka sab se bada turning point ban jata hai.</p>
+            <p>Lekin masla yeh hota hai ke uske father bohot strict aur ba-asar shakhs hote hain. Agar unhe yeh baat pata chal jaye, toh uski jaan bhi khatre mein pad sakti hai.</p>
+            <p>Isi dauran uski shaadi uske cousin ke sath fix kar di jati hai, jo uske liye ek qaid jaisa mehsoos hota hai.</p>
+            <p>👉 Critical moment</p>
+            <p>Imama apni best friend ke zariye Salar Sikander tak pohanchti hai — jo uski madad kar sakta hai.</p>
+
+            <h3 class="gold-serif text-3xl italic">Imama aur Salar ki pehli mulaqat</h3>
+            <p>Imama Salar se darkhwast karti hai ke woh uske sath ek temporary nikah kar le, taake woh apne ghar se mehfooz taur par nikal sake.</p>
+            <p>👉 Important scene</p>
+            <p>Salar shuru mein isay ek fun challenge samajhta hai aur bina zyada soche samjhay maan jata hai, kyunki uske liye yeh serious nahi hota.</p>
+            <p>Nikah ho jata hai — lekin yeh sirf naam ka hota hai aur dono ke liye is waqt iski koi khaas ahmiyat nahi hoti.</p>
+
+            <h3 class="gold-serif text-3xl italic">>>> Separation aur Ghalat Fehmiyaan</h3>
+            <p>Nikah ke baad Imama apni hifazat ke liye chhup jati hai, jabke Salar apni zindagi mein itna masroof ho jata hai ke dheere dheere usay Imama ka khayal bhi nahi rehta.</p>
+            <p>Imama apni nayi pehchaan ke sath struggle karti hai — tanhai, financial problems aur apne imaan par qaayam rehne ki koshish karti rehti hai.</p>
+            <p>👉 Yeh uski sabr aur tawakkul ka sakht imtehan hota hai</p>
+
+            <h3 class="gold-serif text-3xl italic">>>> Salar ka Zawaal (Downfall)</h3>
+            <p>Dusri taraf Salar ki zindagi dheere dheere bigadti chali jati hai — drugs, addiction aur be-maqsad relationships usay andar se tod dete hain.</p>
+            <p>Ek waqt aata hai jab sab kuch uske control se bahar ho jata hai.</p>
+            <p>👉 Major turning point</p>
+            <p>Salar ek dangerous situation aur mental breakdown ka shikar ho jata hai jo usay uski zindagi ke sab se neeche level tak le aata hai.</p>
+
+            <h3 class="gold-serif text-3xl italic">>>> Hidayat ka Safar</h3>
+            <p>Is crisis ke baad Salar dheere dheere apni zindagi ko samajhna shuru karta hai.</p>
+            <p>Usay ehsaas hota hai ke duniya ki fani khushiyan asal mein bekaar hain aur woh andar se roohani tor par khaali hai.</p>
+            <p>Yahin se uski hidayat ka safar shuru hota hai.</p>
+            <p>Woh Quran ko samajhne ki koshish karta hai, namaz shuru karta hai aur apni ghaltiyon par nadamat mehsoos karta hai.</p>
+
+            <h3 class="gold-serif text-3xl italic">>>> Imama ki Musalsal Jaddo Jahad</h3>
+            <p>Imama lagataar struggle karti rehti hai — apni identity chhupa kar, financial independence hasil karte hue aur har haal mein apne imaan par qaayam rehti hai.</p>
+            <p>👉 Yeh uski istiqamat aur sabr ki zabardast misaal ban jati hai</p>
+
+            <h3 class="gold-serif text-3xl italic">>>> Reconnection</h3>
+            <p>Kuch arse baad Salar ko ehsaas hota hai ke uski ek wife hai — Imama — jise woh nazar andaaz karta raha.</p>
+            <p>Woh usay dhoondhne ka faisla karta hai.</p>
+            <p>Jab woh Imama tak pohanchta hai, usay samajh aata hai ke Imama ne kitni mushkil zindagi guzari hai.</p>
+            <p>👉 Yeh moment uske liye aankhein khol dene wala hota hai</p>
+
+            <h3 class="gold-serif text-3xl italic">>>> Real Rishta</h3>
+            <p>Ab Salar pehle jaisa careless nahi rehta, balki woh Imama ko dil se apni wife ke taur par accept karta hai.</p>
+            <p>Imama shuru mein ehtiyaat karti hai kyunki trust karna asaan nahi hota.</p>
+            <p>Dheere dheere unke darmiyan samajh, izzat aur bharosa paida hota hai.</p>
+
+            <h3 class="gold-serif text-3xl italic">>>> Roohani Taraqqi aur Maqsad</h3>
+            <p>Salar apni zindagi ka asal maqsad dhoond leta hai.</p>
+            <p>👉 Woh ek welfare organization shuru karta hai jo zarooratmand logon ki madad karti hai</p>
+            <p>Ek self-centered ladka dheere dheere ek begharz insaan ban jata hai.</p>
+
+            <h3 class="gold-serif text-3xl italic">>>> Married Life</h3>
+            <p>Unki shaadi-shuda zindagi saadgi se bhari hoti hai lekin usmein sukoon aur balance hota hai.</p>
+            <p>Mutual respect, shared faith aur emotional connection unke rishte ki bunyaad bante hain.</p>
+            <p>Imama ke liye yeh sab uski sabr aur qurbaniyon ka khoobsurat sila hota hai.</p>
+
+            <!-- Key Themes & Title Meaning -->
+            <div class="grid md:grid-cols-2 gap-8 bg-black/20 p-10 border border-[#c5a059]/10 mt-16">
+                <div>
+                    <h4 class="gold-serif text-2xl mb-4">Key Themes:</h4>
+                    <ul class="space-y-3 text-lg opacity-80 list-none">
+                        <li>
+                            <span class="text-[#c5a059] mr-2">◈</span>
+                            <strong>Sabr:</strong> Sabr ka ajar aur Allah ki taraf se rehmat.
+                        </li>
+                        <li>
+                            <span class="text-[#c5a059] mr-2">◈</span>
+                            <strong>Self-discovery:</strong> Apni pehchaan aur zindagi ka maqsad dhoondhna.
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="gold-serif text-2xl mb-4">Title Meaning:</h4>
+                    <p class="text-lg opacity-80">
+                        "Peer-e-Kamil" ka matlab hai ek Perfect Murshid — jo Allah aur Prophet (PBUH) ki asal taleemat ka numayinda hota hai.
+                    </p>
+                </div>
+            </div>
+
+            <p class="text-center italic opacity-70 pt-12 text-2xl">
+                "Jab insaan sachai ki talash mein nikalta hai, toh Allah uske liye raaste asaan kar deta hai."
+            </p>
+        </div>
+
+        <div class="mt-24 text-center">
+            <button id="readMoreBtn" class="btn-expand">Read Full Narrative</button>
+        </div>
+
+        <footer class="mt-48 text-center pb-20 border-t border-[#c5a059]/10 pt-20">
+            <div class="gold-serif italic text-3xl mb-4">Dastaan</div>
+            <p class="text-[9px] tracking-[0.6em] uppercase opacity-30">Where Every Word Finds Its Soul</p>
+        </footer>
+    </main>
+
+    <div id="backToTop">↑</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Custom Cursor
+            const dot = document.querySelector('.cursor-dot');
+            const outline = document.querySelector('.cursor-outline');
+            
+            window.addEventListener('mousemove', (e) => {
+                dot.style.left = e.clientX + 'px';
+                dot.style.top = e.clientY + 'px';
+                outline.style.left = e.clientX + 'px';
+                outline.style.top = e.clientY + 'px';
+            });
+
+            // Back to Top
+            const btt = document.getElementById('backToTop');
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 400) {
+                    btt.classList.add('show');
+                } else {
+                    btt.classList.remove('show');
+                }
+            });
+            btt.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Read More Toggle (Fixed & Smooth)
+            const readBtn = document.getElementById('readMoreBtn');
+            const fullSummary = document.getElementById('fullSummary');
+            
+            readBtn.onclick = () => {
+                if (fullSummary.classList.contains('opacity-0')) {
+                    // Open
+                    fullSummary.style.maxHeight = fullSummary.scrollHeight + "px";
+                    fullSummary.classList.remove('opacity-0');
+                    fullSummary.classList.add('opacity-100');
+                    readBtn.innerText = 'Collapse Narrative';
+                    
+                    setTimeout(() => {
+                        fullSummary.scrollIntoView({ behavior: 'smooth' });
+                    }, 300);
+                } else {
+                    // Close
+                    fullSummary.style.maxHeight = "0px";
+                    fullSummary.classList.remove('opacity-100');
+                    fullSummary.classList.add('opacity-0');
+                    readBtn.innerText = 'Read Full Narrative';
+                    
+                    setTimeout(() => {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }, 400);
+                }
+            };
+
+            // Font Size Toggle
+            const fontBtn = document.getElementById('fontBtn');
+            let isLarge = false;
+            fontBtn.onclick = () => {
+                isLarge = !isLarge;
+                const size = isLarge ? '1.75rem' : '1.25rem';
+                document.getElementById('readingArea').style.fontSize = size;
+                document.getElementById('fullSummary').style.fontSize = size;
+            };
+
+            // Theme Toggle
+            const themeBtn = document.getElementById('themeBtn');
+            let isDark = true;
+            themeBtn.onclick = () => {
+                isDark = !isDark;
+                if (!isDark) {
+                    document.body.style.background = "#fdfaf1";
+                    document.body.style.color = "#1a1a1a";
+                    themeBtn.innerText = "Dark Mode";
+                } else {
+                    document.body.style.background = "radial-gradient(circle at center, #002e24 0%, #001a14 100%)";
+                    document.body.style.color = "rgba(197, 160, 89, 0.7)";
+                    themeBtn.innerText = "Invert Mode";
+                }
+            };
+        });
+    </script>
+</body>
+</html>

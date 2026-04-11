@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dastaan | Sukoon-e-Dil | Elite Library</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;1,400&family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --deep-green: #032219;
+            --vintage-gold: #c5a059;
+            --soft-cream: #f4eee0;
+            --bg-color: #032219;
+            --text-color: #f4eee0;
+            --card-bg: rgba(255, 255, 255, 0.02);
+            --nav-bg: rgba(3, 34, 25, 0.85);
+            --border-color: rgba(197, 160, 89, 0.1);
+        }
+
+        [data-theme="light"] {
+            --bg-color: #f4eee0;
+            --text-color: #032219;
+            --card-bg: rgba(0, 0, 0, 0.04);
+            --nav-bg: rgba(244, 238, 224, 0.85);
+            --border-color: rgba(3, 34, 25, 0.1);
+        }
+
+        html { scroll-behavior: smooth; }
+        body { 
+            background-color: var(--bg-color); 
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-color);
+            overflow-x: hidden;
+            cursor: none; 
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+        .serif { font-family: 'Bodoni Moda', serif; }
+        .gold-text { color: var(--vintage-gold); }
+        
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-color); }
+        ::-webkit-scrollbar-thumb { background: var(--vintage-gold); border-radius: 10px; }
+
+        #scrollProgress {
+            position: fixed; top: 0; left: 0; height: 3px;
+            background: var(--vintage-gold); z-index: 1000;
+            width: 0%; transition: width 0.1s ease;
+            box-shadow: 0 0 15px var(--vintage-gold);
+        }
+
+        .announcement-bar {
+            background: var(--vintage-gold);
+            color: var(--deep-green);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-align: center;
+            padding: 8px 0;
+            text-transform: uppercase;
+        }
+
+        .cursor-dot {
+            width: 8px; height: 8px; background: var(--vintage-gold);
+            position: fixed; pointer-events: none; border-radius: 50%;
+            z-index: 9999; transform: translate(-50%, -50%);
+        }
+        .cursor-outline {
+            width: 40px; height: 40px; border: 1px solid var(--vintage-gold);
+            position: fixed; pointer-events: none; border-radius: 50%;
+            z-index: 9998; transform: translate(-50%, -50%);
+            transition: all 0.15s ease-out;
+        }
+
+        .reveal {
+            opacity: 0; transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .reveal.active {
+            opacity: 1; transform: translateY(0);
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .hero-animate { animation: fadeInUp 1.2s ease-out forwards; }
+
+        nav {
+            position: sticky; top: 0; z-index: 100;
+            background: var(--nav-bg);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.4s ease;
+        }
+        nav.scrolled {
+            padding: 10px 40px;
+            border-bottom: 1px solid var(--vintage-gold);
+        }
+
+        .novel-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .novel-card:hover {
+            border: 1px solid var(--vintage-gold);
+            transform: translateY(-12px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        .novel-card img {
+            width: 100%; height: 380px; object-fit: cover;
+            filter: grayscale(100%); opacity: 0.75; transition: 0.8s;
+        }
+        .novel-card:hover img { filter: grayscale(0%); opacity: 1; transform: scale(1.08); }
+
+        .btn-elite {
+            position: relative; display: inline-block; padding: 12px 30px;
+            border: 1px solid var(--vintage-gold); color: var(--vintage-gold);
+            text-transform: uppercase; font-size: 10px; font-weight: 700;
+            letter-spacing: 2px; overflow: hidden; transition: 0.5s; z-index: 1;
+            width: 100%; text-align: center; background: transparent;
+        }
+        .btn-elite:hover { color: var(--deep-green); }
+        .btn-elite::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: var(--vintage-gold); transition: 0.5s; z-index: -1;
+        }
+        .btn-elite:hover::before { left: 0; }
+
+        .cat-btn.active {
+            background: var(--vintage-gold);
+            color: var(--deep-green);
+            font-weight: 700;
+        }
+
+        #backToTop {
+            position: fixed; bottom: 30px; right: 30px;
+            width: 50px; height: 50px;
+            background: var(--vintage-gold); color: var(--deep-green);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; opacity: 0; visibility: hidden; transition: 0.4s; z-index: 500;
+        }
+        #backToTop.show { opacity: 1; visibility: visible; }
+
+        /* Theme Toggle Button Style */
+        #themeToggle {
+            position: fixed; bottom: 30px; left: 30px;
+            width: 50px; height: 50px;
+            background: var(--vintage-gold); color: var(--deep-green);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; z-index: 500; border: none; font-size: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: 0.3s;
+        }
+        #themeToggle:hover { transform: scale(1.1); }
+        
+        .newsletter-input {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid var(--border-color);
+            padding: 10px 0;
+            width: 100%;
+            color: var(--text-color);
+            outline: none;
+            transition: 0.3s;
+        }
+        .newsletter-input:focus { border-bottom: 1px solid var(--vintage-gold); }
+/* Mobile Responsive Fixes */
+@media (max-width: 768px) {
+    .cursor-dot, .cursor-outline { display: none; } /* Mobile pe cursor nahi chahiye */
+    body { cursor: auto; }
+    
+    .text-7xl { font-size: 3.5rem; line-height: 1; } /* Hero text mobile ke liye */
+    .text-9xl { font-size: 4.5rem; line-height: 1; }
+    
+    .novel-card img { height: 260px; } /* Card ki image thodi chhoti */
+    
+    #themeToggle { left: 20px; bottom: 20px; width: 45px; height: 45px; }
+    #backToTop { right: 20px; bottom: 20px; width: 45px; height: 45px; }
+}
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="announcement-bar">New Release: Mala Chapter 18 is now live in the library</div>
+    
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-outline" id="cursorOutline"></div>
+    <div id="scrollProgress"></div>
+
+    <nav class="py-5 px-10 flex justify-between items-center" id="mainNav">
+    <div class="text-3xl serif italic gold-text tracking-tighter">Dastaan</div>
+    
+    <div class="md:hidden text-2xl gold-text cursor-pointer" id="mobileMenuBtn">☰</div>
+
+    <div class="hidden md:flex space-x-12 text-[10px] tracking-[0.4em] uppercase opacity-60" id="navLinks">
+        <a href="#novelGrid" class="hover:gold-text hover:opacity-100 transition">Library</a>
+        <a href="#authors-section" class="hover:gold-text hover:opacity-100 transition">Authors</a>
+        <a href="#stats-section" class="hover:gold-text hover:opacity-100 transition">Our Impact</a>
+    </div>
+</nav>
+
+    <section class="max-w-6xl mx-auto py-32 px-6 text-center hero-animate">
+        <span class="text-[10px] uppercase tracking-[0.8em] gold-text opacity-70 mb-4 block">Est. 2025 | Premium Urdu Library</span>
+        <h1 class="text-7xl md:text-9xl serif italic mb-8">Lafzon ki <span class="gold-text">Chashni</span></h1>
+        <p class="max-w-2xl mx-auto opacity-50 font-light leading-relaxed text-sm md:text-base">
+            Salar ki hidayat se Jihan ki maseehaai tak—ek aisi munfarid jagah jahan har dastaan aapki rooh ko naye raste dikhayegi.
+        </p>
+    </section>
+
+    <section class="max-w-6xl mx-auto px-6 mb-32 reveal">
+        <div class="bg-white/5 border border-white/5 rounded-2xl p-8 md:p-16 flex flex-col md:flex-row items-center gap-16">
+            <div class="w-full md:w-1/3 shadow-[0_0_50px_rgba(0,0,0,0.5)] rounded-lg overflow-hidden">
+                <img src="images/peere_kamil.jpg" alt="Featured" class="w-full h-full object-cover grayscale-0 opacity-100">
+            </div>
+            <div class="w-full md:w-2/3 text-center md:text-left">
+                <p class="gold-text text-[10px] tracking-[0.4em] uppercase mb-4">Masterpiece of the Year</p>
+                <h2 class="text-6xl serif italic mb-6">Peer-e-Kamil</h2>
+                <p class="opacity-60 text-lg serif italic mb-10 leading-relaxed">"Mohabbat ka woh rasta jo hidayat ki taraf le jata hai. Imama aur Salar ki dastaan jo ab dilon par raaj karti hai."</p>
+                <a href="reading.html" class="inline-block px-12 py-4 bg-vintage-gold text-deep-green text-[10px] tracking-[0.4em] uppercase font-bold hover:bg-white transition-all duration-500">Read Masterpiece</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="max-w-7xl mx-auto px-6 mb-20 reveal">
+        <div class="flex justify-between items-end border-b border-white/5 pb-6">
+            <div>
+                <h2 class="text-3xl serif italic gold-text">New Arrivals</h2>
+                <p class="text-[9px] uppercase tracking-[0.3em] opacity-40">Freshly added to the collection</p>
+            </div>
+            <a href="#novelGrid" class="text-[10px] uppercase tracking-widest gold-text hover:underline">View All Stories</a>
+        </div>
+    </section>
+
+    <div id="novelGrid" class="max-w-4xl mx-auto text-center mb-20 px-6 reveal">
+        <input type="text" id="searchInput" placeholder="Search a story, find yourself..." 
+        class="w-full p-6 border-b-2 border-vintage-gold/20 bg-transparent text-2xl serif italic text-center outline-none focus:border-vintage-gold transition-all mb-10">
+        
+        <div class="flex flex-wrap justify-center gap-4">
+            <button onclick="filterCategory('all', this)" class="cat-btn active px-8 py-2 border border-white/10 text-[10px] uppercase tracking-widest rounded-full hover:border-vintage-gold transition">Everything</button>
+            <button onclick="filterCategory('spiritual', this)" class="cat-btn px-8 py-2 border border-white/10 text-[10px] uppercase tracking-widest rounded-full hover:border-vintage-gold transition">Spiritual</button>
+            <button onclick="filterCategory('suspense', this)" class="cat-btn px-8 py-2 border border-white/10 text-[10px] uppercase tracking-widest rounded-full hover:border-vintage-gold transition">Suspense</button>
+        </div>
+    </div>
+
+    <section class="max-w-7xl mx-auto px-6 pb-32">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12" id="mainGrid">
+            <div class="novel-card reveal rounded-xl" data-category="spiritual">
+                <img src="images/peere_kamil.jpg" alt="PK">
+                <div class="p-10 text-center">
+                    <div class="flex justify-center items-center gap-2 mb-2">
+                        <span class="text-[10px] gold-text">★★★★★</span>
+                        <span class="text-[11px] opacity-40 font-bold">5.0</span>
+                    </div>
+                    <h3 class="text-3xl serif italic gold-text">Peer-e-Kamil</h3>
+                    <p class="text-[10px] tracking-widest uppercase opacity-40 mt-2 mb-8">Umera Ahmed</p>
+                    <a href="reading.html" class="btn-elite">Read Now</a>
+                </div>
+            </div>
+
+            <div class="novel-card reveal rounded-xl" data-category="spiritual">
+                <img src="images/aabe-hayat.jpg" alt="AH">
+                <div class="p-10 text-center">
+                    <div class="flex justify-center items-center gap-2 mb-2">
+                        <span class="text-[10px] gold-text">★★★★★</span>
+                        <span class="text-[11px] opacity-40 font-bold">5.0</span>
+                    </div>
+                    <h3 class="text-3xl serif italic gold-text">Aab-e-Hayat</h3>
+                    <p class="text-[10px] tracking-widest uppercase opacity-40 mt-2 mb-8">Umera Ahmed</p>
+                    <a href="aabehayat.html" class="btn-elite">Read Now</a>
+                </div>
+            </div>
+
+            <div class="novel-card reveal rounded-xl" data-category="suspense">
+                <img src="images/jkp.jpg" alt="JKP">
+                <div class="p-10 text-center">
+                    <div class="flex justify-center items-center gap-2 mb-2">
+                        <span class="text-[10px] gold-text">★★★★★</span>
+                        <span class="text-[11px] opacity-40 font-bold">4.9</span>
+                    </div>
+                    <h3 class="text-3xl serif italic gold-text">Jannat Ke Pattay</h3>
+                    <p class="text-[10px] tracking-widest uppercase opacity-40 mt-2 mb-8">Nemrah Ahmed</p>
+                    <a href="jkp.html" class="btn-elite">Read Now</a>
+                </div>
+            </div>
+
+            <div class="novel-card reveal rounded-xl" data-category="suspense">
+                <img src="images/namal.jpg" alt="Namal">
+                <div class="p-10 text-center">
+                    <div class="flex justify-center items-center gap-2 mb-2">
+                        <span class="text-[10px] gold-text">★★★★★</span>
+                        <span class="text-[11px] opacity-40 font-bold">5.0</span>
+                    </div>
+                    <h3 class="text-3xl serif italic gold-text">Namal</h3>
+                    <p class="text-[10px] tracking-widest uppercase opacity-40 mt-2 mb-8">Nemrah Ahmed</p>
+                    <a href="namal.html" class="btn-elite">Read Now</a>
+                </div>
+            </div>
+
+            <div class="novel-card reveal rounded-xl" data-category="spiritual">
+                <img src="images/mushaf.jpg" alt="Mushaf">
+                <div class="p-10 text-center">
+                    <div class="flex justify-center items-center gap-2 mb-2">
+                        <span class="text-[10px] gold-text">★★★★☆</span>
+                        <span class="text-[11px] opacity-40 font-bold">4.7</span>
+                    </div>
+                    <h3 class="text-3xl serif italic gold-text">Mushaf</h3>
+                    <p class="text-[10px] tracking-widest uppercase opacity-40 mt-2 mb-8">Nemrah Ahmed</p>
+                    <a href="mushaf.html" class="btn-elite">Read Now</a>
+                </div>
+            </div>
+
+            <div class="novel-card reveal rounded-xl" data-category="spiritual">
+                <img src="images/amarbail.jpg" alt="AB">
+                <div class="p-10 text-center">
+                    <div class="flex justify-center items-center gap-2 mb-2">
+                        <span class="text-[10px] gold-text">★★★★★</span>
+                        <span class="text-[11px] opacity-40 font-bold">4.8</span>
+                    </div>
+                    <h3 class="text-3xl serif italic gold-text">Amar Bail</h3>
+                    <p class="text-[10px] tracking-widest uppercase opacity-40 mt-2 mb-8">Umera Ahmed</p>
+                    <a href="amarbail.html" class="btn-elite">Read Now</a>
+                </div>
+            </div>
+
+            <div class="novel-card reveal rounded-xl" data-category="spiritual">
+                <img src="images/alif.jpg" alt="Alif">
+                <div class="p-10 text-center">
+                    <div class="flex justify-center items-center gap-2 mb-2">
+                        <span class="text-[10px] gold-text">★★★★★</span>
+                        <span class="text-[11px] opacity-40 font-bold">5.0</span>
+                    </div>
+                    <h3 class="text-3xl serif italic gold-text">Alif</h3>
+                    <p class="text-[10px] tracking-widest uppercase opacity-40 mt-2 mb-8">Umera Ahmed</p>
+                    <a href="alif.html" class="btn-elite">Read Now</a>
+                </div>
+            </div>
+
+            <div class="novel-card reveal rounded-xl" data-category="suspense">
+                <img src="images/halim.jpg" alt="Halim">
+                <div class="p-10 text-center">
+                    <div class="flex justify-center items-center gap-2 mb-2">
+                        <span class="text-[10px] gold-text">★★★★☆</span>
+                        <span class="text-[11px] opacity-40 font-bold">4.8</span>
+                    </div>
+                    <h3 class="text-3xl serif italic gold-text">Haalim</h3>
+                    <p class="text-[10px] tracking-widest uppercase opacity-40 mt-2 mb-8">Nemrah Ahmed</p>
+                    <a href="halim.html" class="btn-elite">Read Now</a>
+                </div>
+            </div>
+
+            <div class="novel-card reveal rounded-xl" data-category="spiritual">
+                <img src="images/manoshalwa.jpg" alt="ManOSalwa">
+                <div class="p-10 text-center">
+                    <div class="flex justify-center items-center gap-2 mb-2">
+                        <span class="text-[10px] gold-text">★★★★★</span>
+                        <span class="text-[11px] opacity-40 font-bold">4.6</span>
+                    </div>
+                    <h3 class="text-3xl serif italic gold-text">Man-o-Salwa</h3>
+                    <p class="text-[10px] tracking-widest uppercase opacity-40 mt-2 mb-8">Umera Ahmed</p>
+                    <a href="manoshalwa.html" class="btn-elite">Read Now</a>
+                </div>
+            </div>
+
+            <div class="novel-card reveal rounded-xl" data-category="suspense">
+                <img src="images/karakoram.jpg" alt="Karakoram">
+                <div class="p-10 text-center">
+                    <div class="flex justify-center items-center gap-2 mb-2">
+                        <span class="text-[10px] gold-text">★★★★★</span>
+                        <span class="text-[11px] opacity-40 font-bold">4.9</span>
+                    </div>
+                    <h3 class="text-3xl serif italic gold-text">Karakoram</h3>
+                    <p class="text-[10px] tracking-widest uppercase opacity-40 mt-2 mb-8">Nemrah Ahmed</p>
+                    <a href="karakoram.html" class="btn-elite">Read Now</a>
+                </div>
+            </div>
+
+            <div class="novel-card reveal rounded-xl" data-category="suspense">
+                <img src="images/mala.jpg" alt="Mala">
+                <div class="p-10 text-center">
+                    <div class="flex justify-center items-center gap-2 mb-2">
+                        <span class="text-[10px] gold-text">★★★★★</span>
+                        <span class="text-[11px] opacity-40 font-bold">5.0</span>
+                    </div>
+                    <h3 class="text-3xl serif italic gold-text">Mala</h3>
+                    <p class="text-[10px] tracking-widest uppercase opacity-40 mt-2 mb-8">Nemrah Ahmed</p>
+                    <a href="mala.html" class="btn-elite">Read Now</a>
+                </div>
+            </div>
+
+            <div class="novel-card reveal rounded-xl" data-category="spiritual">
+                <img src="images/lahasil.jpg" alt="LaHasil">
+                <div class="p-10 text-center">
+                    <div class="flex justify-center items-center gap-2 mb-2">
+                        <span class="text-[10px] gold-text">★★★★★</span>
+                        <span class="text-[11px] opacity-40 font-bold">4.7</span>
+                    </div>
+                    <h3 class="text-3xl serif italic gold-text">La-Hasil</h3>
+                    <p class="text-[10px] tracking-widest uppercase opacity-40 mt-2 mb-8">Umera Ahmed</p>
+                    <a href="lahasil.html" class="btn-elite">Read Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="relative py-48 flex items-center justify-center overflow-hidden border-y border-white/5 bg-black/20">
+        <div class="absolute inset-0 opacity-10 bg-[url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f')] bg-fixed bg-cover bg-center"></div>
+        <div class="relative z-10 text-center px-6">
+            <div class="h-48 flex flex-col justify-center items-center">
+                <p id="quoteText" class="serif text-4xl md:text-6xl italic gold-text mb-6 transition-all duration-1000 opacity-100">
+                    "Kitabein bolti hain, bas sunne wala chahiye."
+                </p>
+                <p id="quoteAuthor" class="text-[10px] tracking-[0.6em] uppercase opacity-40">Sukoon-e-Dil ki Talash</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="max-w-4xl mx-auto py-32 px-6 reveal">
+        <div class="text-center">
+            <h2 class="text-4xl serif italic mb-6">Join the Inner Circle</h2>
+            <p class="opacity-50 text-xs tracking-widest mb-12 uppercase">Subscribe to receive notifications of new chapters and masterpieces.</p>
+            <div class="flex flex-col md:flex-row gap-8 items-end">
+                <input type="email" placeholder="YOUR EMAIL ADDRESS" class="newsletter-input">
+                <button class="btn-elite md:w-64">Subscribe</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="stats-section" class="max-w-6xl mx-auto py-24 px-6 grid grid-cols-2 md:grid-cols-4 gap-12 text-center reveal">
+        <div><p class="text-4xl gold-text serif mb-2">12</p><p class="text-[9px] tracking-widest uppercase opacity-40">Masterpieces</p></div>
+        <div><p class="text-4xl gold-text serif mb-2">20k</p><p class="text-[9px] tracking-widest uppercase opacity-40">Active Readers</p></div>
+        <div><p class="text-4xl gold-text serif mb-2">24/7</p><p class="text-[9px] tracking-widest uppercase opacity-40">Free Access</p></div>
+        <div><p class="text-4xl gold-text serif mb-2">∞</p><p class="text-[9px] tracking-widest uppercase opacity-40">Endless Sukoon</p></div>
+    </section>
+
+    <section id="authors-section" class="max-w-7xl mx-auto py-32 px-6 border-t border-white/5 reveal">
+        <div class="text-center mb-24">
+            <h2 class="text-5xl serif italic gold-text">Legends of Storytelling</h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-24 max-w-4xl mx-auto">
+            <div class="text-center group cursor-pointer" onclick="filterByAuthor('Umera Ahmed')">
+                <div class="w-28 h-28 mx-auto rounded-full border border-vintage-gold flex items-center justify-center mb-8 group-hover:bg-vintage-gold transition-all duration-500">
+                    <span class="serif text-4xl gold-text group-hover:text-deep-green">U</span>
+                </div>
+                <h3 class="text-2xl serif italic gold-text">Umera Ahmed</h3>
+                <p class="text-[10px] tracking-widest uppercase opacity-40 mt-2">The Soul Writer</p>
+            </div>
+            <div class="text-center group cursor-pointer" onclick="filterByAuthor('Nemrah Ahmed')">
+                <div class="w-28 h-28 mx-auto rounded-full border border-vintage-gold flex items-center justify-center mb-8 group-hover:bg-vintage-gold transition-all duration-500">
+                    <span class="serif text-4xl gold-text group-hover:text-deep-green">N</span>
+                </div>
+                <h3 class="text-2xl serif italic gold-text">Nemrah Ahmed</h3>
+                <p class="text-[10px] tracking-widest uppercase opacity-40 mt-2">The Mystery Queen</p>
+            </div>
+        </div>
+    </section>
+
+    <footer id="footer-section" class="bg-black/40 py-24 px-10 border-t border-white/5">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-16">
+            <div>
+                <h4 class="serif italic text-3xl gold-text mb-6">Dastaan</h4>
+                <p class="text-xs opacity-50 leading-loose">Har lafz mein ek nayi dunya basi hai. Hamara maqsad aap tak Urdu adab ke shahkar pahunchana hai.</p>
+            </div>
+            <div>
+                <h4 class="text-[10px] tracking-[0.4em] uppercase mb-8 gold-text">Quick Navigation</h4>
+                <ul class="text-[10px] space-y-4 opacity-50 uppercase tracking-widest">
+                    <li><a href="#" class="hover:gold-text transition">Home</a></li>
+                    <li><a href="#novelGrid" class="hover:gold-text transition">Library</a></li>
+                    <li><a href="#authors-section" class="hover:gold-text transition">Authors</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-[10px] tracking-[0.4em] uppercase mb-8 gold-text">Connect</h4>
+                <div class="flex space-x-6 opacity-50">
+                    <span class="text-xs hover:gold-text cursor-pointer transition">Instagram</span>
+                    <span class="text-xs hover:gold-text cursor-pointer transition">Twitter</span>
+                </div>
+            </div>
+        </div>
+        <div class="mt-20 pt-10 border-t border-white/5 text-center text-[10px] tracking-[0.5em] opacity-30 uppercase">
+            &copy; 2025 Dastaan Sukoon-e-Dil. All rights reserved.
+        </div>
+    </footer>
+
+    <button id="themeToggle" title="Toggle Mode">🌓</button>
+    <div id="backToTop">↑</div>
+
+    <script>
+        // Theme Toggle Logic
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.documentElement;
+        
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        body.setAttribute('data-theme', savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+
+        const dot = document.getElementById("cursorDot");
+        const outline = document.getElementById("cursorOutline");
+
+        window.addEventListener("mousemove", (e) => {
+            dot.style.left = e.clientX + "px";
+            dot.style.top = e.clientY + "px";
+            outline.animate({
+                left: `${e.clientX}px`,
+                top: `${e.clientY}px`
+            }, { duration: 400, fill: "forwards" });
+        });
+
+        document.querySelectorAll('a, button, .novel-card, .group').forEach(el => {
+            el.addEventListener('mouseenter', () => outline.style.transform = "translate(-50%, -50%) scale(1.5)");
+            el.addEventListener('mouseleave', () => outline.style.transform = "translate(-50%, -50%) scale(1)");
+        });
+
+        function handleScroll() {
+            const winScroll = document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("scrollProgress").style.width = scrolled + "%";
+
+            const nav = document.getElementById("mainNav");
+            if (winScroll > 50) nav.classList.add("scrolled");
+            else nav.classList.remove("scrolled");
+
+            const btt = document.getElementById('backToTop');
+            if (winScroll > 400) btt.classList.add('show'); else btt.classList.remove('show');
+
+            const reveals = document.querySelectorAll(".reveal");
+            reveals.forEach(r => {
+                const elementTop = r.getBoundingClientRect().top;
+                if (elementTop < window.innerHeight - 100) {
+                    r.classList.add("active");
+                }
+            });
+        }
+        window.addEventListener("scroll", handleScroll);
+        window.addEventListener("load", handleScroll);
+
+        let currentCategory = 'all';
+        const masterpieces = [
+            { q: "\"Salar, kya tumne Peer-e-Kamil ko dekha hai?\"", a: "Peer-e-Kamil" },
+            { q: "\"Mohabbat hidayat hai, aur hidayat sirf naseeb walon ko milti hai.\"", a: "Aab-e-Hayat" },
+            { q: "\"Jannat ke pattay kabhi khizaan mein nahi jharte.\"", a: "Jannat Ke Pattay" },
+            { q: "\"Namal... jahan badle ki aag aur sach ki talash hai.\"", a: "Namal" },
+            { q: "\"Kitabein bolti hain, bas sunne wala chahiye.\"", a: "Sukoon-e-Dil" }
+        ];
+        
+        let qIndex = 0;
+        setInterval(() => {
+            const txt = document.getElementById('quoteText');
+            const auth = document.getElementById('quoteAuthor');
+            if(txt && auth) {
+                txt.style.opacity = 0;
+                auth.style.opacity = 0;
+                setTimeout(() => {
+                    qIndex = (qIndex + 1) % masterpieces.length;
+                    txt.innerText = masterpieces[qIndex].q;
+                    auth.innerText = masterpieces[qIndex].a;
+                    txt.style.opacity = 1;
+                    auth.style.opacity = 0.4;
+                }, 1000);
+            }
+        }, 5000);
+
+        function applyFilters() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.novel-card');
+            cards.forEach(card => {
+                const title = card.querySelector('h3').innerText.toLowerCase();
+                const writer = card.querySelector('p').innerText.toLowerCase();
+                const category = card.getAttribute('data-category');
+                const matchesSearch = title.includes(query) || writer.includes(query);
+                const matchesCategory = currentCategory === 'all' || category === currentCategory;
+                card.style.display = (matchesSearch && matchesCategory) ? "flex" : "none";
+            });
+        }
+
+        function filterCategory(cat, btn) {
+            currentCategory = cat;
+            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            applyFilters();
+        }
+
+        document.getElementById('searchInput').addEventListener('input', applyFilters);
+
+        function filterByAuthor(name) {
+            document.getElementById('searchInput').value = name;
+            applyFilters();
+            document.getElementById('novelGrid').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        document.getElementById('backToTop').addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+// Mobile Menu Toggle
+const menuBtn = document.getElementById('mobileMenuBtn');
+const navLinks = document.getElementById('navLinks');
+
+menuBtn.addEventListener('click', () => {
+    navLinks.classList.toggle('hidden');
+    // Mobile style apply karne ke liye
+    navLinks.classList.toggle('flex');
+    navLinks.classList.toggle('flex-col');
+    navLinks.classList.toggle('absolute');
+    navLinks.classList.toggle('top-full');
+    navLinks.classList.toggle('left-0');
+    navLinks.classList.toggle('w-full');
+    navLinks.classList.toggle('bg-deep-green');
+    navLinks.classList.toggle('p-6');
+    navLinks.classList.toggle('items-center');
+    navLinks.classList.toggle('space-y-6');
+});
+    </script>
+</body>
+</html>
