@@ -1,34 +1,35 @@
 <!DOCTYPE html>
-<html lang="ur">
+<html lang="en">
 <head>
-<link rel="icon" href="favicon.ico" type="image/x-icon">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chapter 02 - Ishq-e-Aatish</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
 
-<!-- OpenGraph & Social Media Preview -->
-<meta property="og:type" content="article">
-<meta property="og:title" content="Chapter 02 — Ishq-e-Aatish">
-<meta property="og:description" content="Read Chapter 02 of Ishq-e-Aatish by Sadiya Rajpoot.">
-<meta property="og:image" content="ishq_aatish.jpg">
-<meta name="twitter:card" content="summary_large_image">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 02 - Ishq-e-Aatish</title>
+    
+    <!-- OpenGraph & Social Media Preview -->
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Chapter 01 — Ishq-e-Aatish">
+    <meta property="og:description" content="Read Chapter 01 of Ishq-e-Aatish by Sadiya Rajpoot. A profound Urdu novel of faith, guidance, and spiritual transformation.">
+    <meta property="og:image" content="peere_kamil.jpg">
+    <meta name="twitter:card" content="summary_large_image">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="chapter.css">
-<script>
-(function() {
-var t = localStorage.getItem("selectedTheme") || localStorage.getItem("parda_theme") || "dark";
-var f = localStorage.getItem("selectedFont") || localStorage.getItem("parda_font") || "literata";
-var s = localStorage.getItem("selectedSize") || localStorage.getItem("parda_size") || "medium";
-document.documentElement.setAttribute("data-theme", t);
-document.documentElement.setAttribute("data-font", f);
-document.documentElement.setAttribute("data-size", s);
-})();
-</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="chapter.css">
+    <script>
+        (function() {
+            var t = localStorage.getItem("selectedTheme") || localStorage.getItem("parda_theme") || "dark";
+            var f = localStorage.getItem("selectedFont") || localStorage.getItem("parda_font") || "literata";
+            var s = localStorage.getItem("selectedSize") || localStorage.getItem("parda_size") || "medium";
+            document.documentElement.setAttribute("data-theme", t);
+            document.documentElement.setAttribute("data-font", f);
+            document.documentElement.setAttribute("data-size", s);
+        })();
+    </script>
 </head>
-<body data-theme="dark" data-font="literata" data-size="medium">
+<body>
 
     <!-- TOP READING PROGRESS BAR -->
     <div class="progress-container">
@@ -37,19 +38,19 @@ document.documentElement.setAttribute("data-size", s);
 
     <!-- SITE HEADER -->
     <header class="site-header">
-        <a href="ishq_aatish.html" class="logo">Ishq <span>-e- Aatish</span></a>
+        <a href="ishq_aatish.html" class="logo">Peer <span>-e- Kamil</span></a>
         <div class="header-actions">
-            <button class="header-button audio-toggle-btn" onclick="if(typeof toggleAmbient==='function')toggleAmbient('calm', this)" title="Soft Calming Music">Sound</button>
-            <button class="header-button" id="openChapters" onclick="if(typeof openChapters==='function')openChapters(event)">Chapters</button>
-            <button class="header-button" id="openSettings" onclick="if(typeof openSettings==='function')openSettings(event)">Settings</button>
+            <button class="header-button audio-toggle-btn" onclick="toggleAmbient('calm', this)" title="Soft Calming Music">Sound</button>
+            <button class="header-button" id="openChapters">Chapters</button>
+            <button class="header-button" id="openSettings">Settings</button>
         </div>
     </header>
 
-    <!-- CHAPTER DRAWER (ALL 30 CHAPTERS) -->
+    <!-- CHAPTER DRAWER (ALL 93 CHAPTERS) -->
     <div class="chapter-drawer" id="chapterDrawer">
         <div class="drawer-header">
             <h3>Chapters Index (30 Chapters)</h3>
-            <button id="closeChapters" onclick="if(typeof closeAllDrawers==='function')closeAllDrawers()">&times;</button>
+            <button id="closeChapters" onclick="closeAllDrawers()">&times;</button>
         </div>
         <div class="drawer-content">
         <a href="chapter1.html" class="chapter-link"><span>01</span> <div><strong>Chapter 01</strong></div></a>
@@ -85,11 +86,11 @@ document.documentElement.setAttribute("data-size", s);
         </div>
     </div>
 
-    <!-- SETTINGS PANEL (READER CUSTOMIZER) -->
+    <!-- SETTINGS PANEL -->
     <div class="settings-panel" id="settingsPanel">
         <div class="settings-header">
-            <h3>Reader Customizer</h3>
-            <button id="closeSettings" onclick="if(typeof closeAllDrawers==='function')closeAllDrawers()">&times;</button>
+            <h3>Reading Settings</h3>
+            <button id="closeSettings">&times;</button>
         </div>
         
         <div class="setting-group">
@@ -99,15 +100,15 @@ document.documentElement.setAttribute("data-size", s);
                 <button onclick="applyTheme('oled')">OLED Black</button>
                 <button onclick="applyTheme('cream')">Warm Cream</button>
                 <button onclick="applyTheme('midnight')">Midnight Blue</button>
-                <button onclick="applyTheme('emerald')">Rich Emerald</button>
+                <button onclick="applyTheme('emerald')">Emerald</button>
             </div>
         </div>
 
         <div class="setting-group">
-            <label>Typography</label>
+            <label>Font Family</label>
             <button class="font-option" onclick="applyFont('literata')">Literata (Classic)</button>
             <button class="font-option" onclick="applyFont('inter')">Inter (Modern Sans)</button>
-            <button class="font-option" onclick="applyFont('nastaliq')">Urdu Nastaliq Script</button>
+            <button class="font-option" onclick="applyFont('nastaliq')">Urdu Nastaliq</button>
         </div>
 
         <div class="setting-group">
@@ -127,23 +128,24 @@ document.documentElement.setAttribute("data-size", s);
                 <span class="chapter-badge">CHAPTER 02</span>
                 <h1 class="chapter-title">Chapter 02</h1>
                 <div class="chapter-meta">
-                    <span id="read-time">⏱️ 2 Min Read</span>
+                    <span>⏱️ 5 Min Read</span>
                     <span>•</span>
-                    <span id="word-count">335 Words</span>
+                    <span id="word-count">927 Words</span>
                     <span>•</span>
                     <span>Author: Sadiya Rajpoot</span>
                 </div>
             </div>
 
-            <!-- STORY BODY CONTENT -->
+            <!-- STORY BODY CONTENT (NO IMAGES - CONTINUOUS NOVEL FLOW) -->
+
             <div class="story-body">
 <p style="margin-bottom: 1.8rem; line-height: 2.2; text-align: justify; color: var(--text-primary);">Syed he raastoon ko khud -apne liye paicheeda banatey hain aur yeh kehte guzar jatey hain.Ab jo dekhen to koi aisi badi baat nah thi yeh shab o roz, mah o saal ka pur paich safar qadray aasaan bhi ho sakta tha.Hum zara dheyaan se chaltey to, woh ghar jis ke dar o baag pay weerani hai, jis ke har taaq par rakhi hui herani hai, jis ki har subah mein shaamon ki pareshani hai, is mein hum chain se abad bhi ho sakte they.Ab jo dekhe to bohat saaf nazar ate hein saare manzar bhi, pas manzar bhi lekin is der khayaali ka sila kya hoga.Woh jo hona tha huwa, ho bhi chuka line kat ti rahi, lafz badalney ke sabab haasil Umar yahi chand adhoorey khakey koi tasweer mukammal nahi honey payi.Maliha Farooqi 26 May 1977Woh haath mein bookey pakde, ajnabi cheharon ke darmiyan kisi shanasa chehrey ko dhoond rahi thi, ke kisi ne iska naam puraka."Tanya!"Woh mudi aur aawaz ki taraf dekh kar josh se haath hilaya."Faiza" dono ne aik dosrey ki simt qadam bhadhaye aur qareeb aney par galey lag gayeen."Bhal ki engagement bohot bohot mubarak ho."Taaniya ne alag hote hue kaha."thanx."Faiza ne muskura kar mubarakbaad qubool ki.Chalo tumhe apni hone wali bhabhi se milwau.</p>
 <p style="margin-bottom: 1.8rem; line-height: 2.2; text-align: justify; color: var(--text-primary);">Phir Tanya ka haath pakad kar stage par chadh gayi.Tanya ne faiza ke bhai ko wish kar ke iske sath baithi saji sawri aur kuch sharmayi si ladki ko bookey paish kiya. Aur phir chand jumlon ke tabadley ke baad faiza ke sath hi stage se utar gayi."Tumhari Mummy nazar nahi aarhi""Abhi to yahi thi."Faiza ne idhar udhar nazrein dodatey hue kaha.Phir taniya ko liye age badh gayi."suno!"Taniya ne usey mukhatib kiya jo chaltey chaltey ruk kar mehmanon se haal ahwaal bhi daryaft karti ja rahi thi."hann!"Faiza ne iski taraf dekh kar kaha."Woh nahi aaya?""Kon?</p>
 <p style="margin-bottom: 1.8rem; line-height: 2.2; text-align: justify; color: var(--text-primary);">kis ki baat kar rahi ho?"Woh muskurahat daba kar anjaan bantey hue boli."Tumahrey cousin" Tanya ne sanjeedgi se kaha.Falza mustaqil shararat ke mood mein thi. Mere to sabhi cousin yahan hain.</p>
-            </div>
+</div>
 
             <!-- BOTTOM CHAPTER NAVIGATION FOOTER CARDS -->
-            <div class="scene-break">✦ &nbsp; ✦ &nbsp; ✦</div>
+                        <div class="scene-break">✦ &nbsp; ✦ &nbsp; ✦</div>
             <footer class="chapter-nav-footer">
                 <a href="chapter1.html" onclick="window.location.href='chapter1.html'; return true;" class="chapter-nav-card prev"><small>← PREVIOUS CHAPTER 01</small><strong>Chapter 01</strong></a>
                 <a href="chapter3.html" onclick="window.location.href='chapter3.html'; return true;" class="chapter-nav-card next"><small>NEXT CHAPTER 03 →</small><strong>Chapter 03</strong></a>
@@ -154,7 +156,7 @@ document.documentElement.setAttribute("data-size", s);
         <aside class="chapter-sidebar">
             <div class="sticky-sidebar-card">
                 <div class="sidebar-quote-box">
-                    "عشق آتش ہے، اس میں جل کر ہی انسان کے باطن کے اصل رنگ نکھرتے ہیں۔"
+                    "ہر سفر منزل کی تلاش نہیں ہوتا، کچھ سفر انسان کو خود اُس کی پہچان تک لے جاتے ہیں۔"
                 </div>
 
                 <div class="sidebar-widget-title">READING PROGRESS</div>
@@ -167,7 +169,7 @@ document.documentElement.setAttribute("data-size", s);
                         <span>Wajdan</span>
                     </div>
                     <div class="stat-box">
-                        <h4 id="heroine1-mentions">0</h4>
+                        <h4 id="heroine1-mentions">13</h4>
                         <span>Maliha</span>
                     </div>
                 </div>
@@ -178,10 +180,11 @@ document.documentElement.setAttribute("data-size", s);
     <div class="settings-overlay" id="settingsOverlay"></div>
 
     <script src="chapter.js"></script>
+    <script src="peer_e_kaamil.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            localStorage.setItem("last_read_chapter", "chapter2.html");
-            localStorage.setItem("last_read_title", "Chapter 02");
+            localStorage.setItem("last_read_chapter", "chapter1.html");
+            localStorage.setItem("last_read_title", "Chapter 01");
         });
     </script>
 </body>

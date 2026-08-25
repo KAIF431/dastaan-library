@@ -79,8 +79,8 @@ window.updateChapterStats = function() {
         readTimeElement.innerText = `⏱️ ${readTime} Min Read`;
     }
 
-    const wajdanMatches = fullText.match(/Wajdan/gi);
-    const malihaMatches = fullText.match(/Maliha/gi);
+    const wajdanMatches = fullText.match(/\bWajdan\b/gi);
+    const malihaMatches = fullText.match(/\bMaliha\b/gi);
 
     const wajdanEl = document.getElementById('hero1-mentions') || document.getElementById('salar-mentions');
     const malihaEl = document.getElementById('heroine1-mentions') || document.getElementById('imama-mentions');
