@@ -1,9 +1,9 @@
 
 /* ISHQ-E-AATISH MASTER JAVASCRIPT SYSTEM */
 document.addEventListener("DOMContentLoaded", () => {
-    const theme = localStorage.getItem("selectedTheme") || localStorage.getItem("parda_theme") || "dark";
-    const font = localStorage.getItem("selectedFont") || localStorage.getItem("parda_font") || "literata";
-    const size = localStorage.getItem("selectedSize") || localStorage.getItem("parda_size") || "medium";
+    const theme = localStorage.getItem("ishq_aatish_selectedTheme") || "dark";
+    const font = localStorage.getItem("ishq_aatish_selectedFont") || "literata";
+    const size = localStorage.getItem("ishq_aatish_selectedSize") || "medium";
 
     document.documentElement.setAttribute("data-theme", theme);
     document.documentElement.setAttribute("data-font", font);
@@ -12,20 +12,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
 window.applyTheme = function(t) {
     document.documentElement.setAttribute("data-theme", t);
-    localStorage.setItem("selectedTheme", t);
-    localStorage.setItem("parda_theme", t);
+    localStorage.setItem("ishq_aatish_selectedTheme", t);
 };
 
 window.applyFont = function(f) {
     document.documentElement.setAttribute("data-font", f);
-    localStorage.setItem("selectedFont", f);
-    localStorage.setItem("parda_font", f);
+    localStorage.setItem("ishq_aatish_selectedFont", f);
 };
 
 window.applySize = function(s) {
     document.documentElement.setAttribute("data-size", s);
-    localStorage.setItem("selectedSize", s);
-    localStorage.setItem("parda_size", s);
+    localStorage.setItem("ishq_aatish_selectedSize", s);
 };
 
 window.closeAllDrawers = function() {
@@ -127,7 +124,7 @@ window.applyTheme = function(themeName) {
     const t = (themeName === 'default') ? 'dark' : themeName;
     document.documentElement.setAttribute('data-theme', t);
     if (document.body) document.body.setAttribute('data-theme', t);
-    localStorage.setItem('selectedTheme', t);
+    localStorage.setItem('ishq_aatish_selectedTheme', t);
     localStorage.setItem('parda_theme', t);
 };
 
@@ -135,7 +132,7 @@ window.applyFont = function(fontName) {
     if (!fontName) return;
     document.documentElement.setAttribute('data-font', fontName);
     if (document.body) document.body.setAttribute('data-font', fontName);
-    localStorage.setItem('selectedFont', fontName);
+    localStorage.setItem('ishq_aatish_selectedFont', fontName);
     localStorage.setItem('parda_font', fontName);
 };
 
@@ -143,15 +140,15 @@ window.applySize = function(sizeName) {
     if (!sizeName) return;
     document.documentElement.setAttribute('data-size', sizeName);
     if (document.body) document.body.setAttribute('data-size', sizeName);
-    localStorage.setItem('selectedSize', sizeName);
+    localStorage.setItem('ishq_aatish_selectedSize', sizeName);
     localStorage.setItem('parda_size', sizeName);
 };
 
 function restoreSavedPreferences() {
     try {
-        var t = localStorage.getItem("selectedTheme") || localStorage.getItem("parda_theme") || "dark";
-        var f = localStorage.getItem("selectedFont") || localStorage.getItem("parda_font") || "literata";
-        var s = localStorage.getItem("selectedSize") || localStorage.getItem("parda_size") || "medium";
+        var t = localStorage.getItem("ishq_aatish_selectedTheme") || localStorage.getItem("parda_theme") || "dark";
+        var f = localStorage.getItem("ishq_aatish_selectedFont") || localStorage.getItem("parda_font") || "literata";
+        var s = localStorage.getItem("ishq_aatish_selectedSize") || localStorage.getItem("parda_size") || "medium";
         window.applyTheme(t);
         window.applyFont(f);
         window.applySize(s);
