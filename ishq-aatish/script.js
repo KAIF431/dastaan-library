@@ -64,7 +64,7 @@ window.openSettings = function(e) {
 
 window.openSettingsModal = window.openSettings;
 
-// Character Mentions Counter for Ishq-e-Aatish (Wajdan & Maliha)
+// Ishq-e-Aatish Stats & Mentions Counter (Wajdan & Maliha)
 window.updateChapterStats = function() {
     const storyBody = document.querySelector('.story-body');
     const fullText = storyBody ? (storyBody.innerText || storyBody.textContent || "") : "";
@@ -193,11 +193,11 @@ window.closeAllDrawers = function() {
 
     if (panel) {
         panel.classList.remove('active');
-        panel.style.cssText = "position: fixed; top: 0; right: -420px !important; width: 380px; max-width: 100vw; height: 100vh; background: var(--bg-drawer); z-index: 999999; padding: 3rem 2rem; overflow-y: auto; transition: right 0.4s ease;";
+        /* panel cssText override disabled */
     }
     if (drawer) {
         drawer.classList.remove('active');
-        drawer.style.cssText = "position: fixed; top: 0; left: -420px !important; width: 380px; max-width: 100vw; height: 100vh; background: var(--bg-drawer); z-index: 999999; padding: 3rem 2rem; overflow-y: auto; transition: left 0.4s ease;";
+        /* drawer cssText override disabled */
     }
     if (overlay) {
         overlay.classList.remove('active');
@@ -216,7 +216,7 @@ window.openSettings = function(e) {
     const overlay = document.getElementById('settingsOverlay');
     if (panel) {
         panel.classList.add('active');
-        panel.style.cssText = "position: fixed; top: 0; right: 0px !important; width: 380px; max-width: 100vw; height: 100vh; background: var(--bg-drawer); z-index: 999999 !important; padding: 3rem 2rem; overflow-y: auto; display: block !important; box-shadow: -10px 0 35px rgba(0,0,0,0.85); transition: right 0.4s ease;";
+        /* panel cssText override disabled */
     }
     if (overlay) {
         overlay.classList.add('active');
@@ -231,7 +231,7 @@ window.openChapters = function(e) {
     const overlay = document.getElementById('settingsOverlay');
     if (drawer) {
         drawer.classList.add('active');
-        drawer.style.cssText = "position: fixed; top: 0; left: 0px !important; width: 380px; max-width: 100vw; height: 100vh; background: var(--bg-drawer); z-index: 999999 !important; padding: 3rem 2rem; overflow-y: auto; display: block !important; box-shadow: 10px 0 35px rgba(0,0,0,0.85); transition: left 0.4s ease;";
+        /* drawer cssText override disabled */
     }
     if (overlay) {
         overlay.classList.add('active');
