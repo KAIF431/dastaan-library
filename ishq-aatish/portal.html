@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ishq-e-Aatish — Literary Experience</title>
+
+    <!-- OpenGraph & Social Media Sharing Preview Cards -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Ishq-e-Aatish — Literary Experience">
+    <meta property="og:description" content="A profound Urdu digital novel unraveling the deep mysteries of faith, identity, guidance, and spiritual transformation. Written by Sadiya Rajpoot.">
+    <meta property="og:image" content="ishq_aatish.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="peer_e_kaamil.css">
+    <script>
+        (function() {
+            var t = localStorage.getItem("selectedTheme") || localStorage.getItem("parda_theme") || "dark";
+            var f = localStorage.getItem("selectedFont") || localStorage.getItem("parda_font") || "literata";
+            var s = localStorage.getItem("selectedSize") || localStorage.getItem("parda_size") || "medium";
+            document.documentElement.setAttribute("data-theme", t);
+            document.documentElement.setAttribute("data-font", f);
+            document.documentElement.setAttribute("data-size", s);
+        })();
+
+        window.handleCommentSubmit = function(e) {
+            if (e) {
+                if (e.preventDefault) e.preventDefault();
+                if (e.stopPropagation) e.stopPropagation();
+            }
+            var nameInput = document.getElementById("reviewerName");
+            var emailInput = document.getElementById("reviewerEmail");
+            var messageInput = document.getElementById("reviewerMessage");
+            
+            var name = nameInput ? nameInput.value.trim() : "";
+            var email = emailInput ? emailInput.value.trim() : "";
+            var message = messageInput ? messageInput.value.trim() : "";
+
+            if (!name || !message) {
+                alert("Kripya apna Naam aur Message dono bharein!");
+                return false;
+            }
+
+            var newComment = { name: name, message: message, date: new Date().toLocaleDateString() };
+            
+            try {
+                var comments = JSON.parse(localStorage.getItem("parda_comments")) || [];
+                comments.push(newComment);
+                localStorage.setItem("parda_comments", JSON.stringify(comments));
+            } catch(err) {}
+
+            var commentsList = document.getElementById("commentsList");
+            if (commentsList) {
+                var commentDiv = document.createElement("div");
+                commentDiv.className = "comment-item";
+                commentDiv.style.cssText = "background: var(--bg-main); border: 1px solid var(--border-color); padding: 1.5rem; border-radius: 12px; margin-top: 1rem;";
+                commentDiv.innerHTML = '<div class="comment-header" style="color: var(--accent-gold); margin-bottom: 0.5rem;"><strong>' + escapeHTML(name) + '</strong></div><p style="color: var(--text-primary); margin: 0; line-height: 1.6;">' + escapeHTML(message) + '</p>';
+                commentsList.prepend(commentDiv);
+            }
+
+            if (nameInput) nameInput.value = "";
+            if (emailInput) emailInput.value = "";
+            if (messageInput) messageInput.value = "";
+
+            try {
+                var formData = new FormData();
+                formData.append("access_key", "78b08615-65ca-4c89-a320-b21b236bba26");
+                formData.append("subject", "New Comment on Ishq-e-Aatish");
+                formData.append("name", name);
+                formData.append("email", email || "Not Provided");
+                formData.append("message", message);
+                fetch("https://api.web3forms.com/submit", { method: "POST", body: formData }).catch(function(){});
+            } catch(err) {}
+
+            alert("🎉 Aapka comment successfully post ho gaya hai!");
+            return false;
+        };
+
+        function escapeHTML(str) {
+            if (!str) return "";
+            return str.replace(/[&<>'"]/g, function(tag) {
+                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag;
+            });
+        }
+    </script>
+</head>
+
+<body>
+
+<header class="site-header">
+    <a href="ishq_aatish.html" class="logo">Ishq <span>-e- Aatish</span></a>
+    <div class="header-actions">
+        <button class="header-button audio-toggle-btn" onclick="if(typeof toggleAmbient==='function')toggleAmbient('calm', this)" title="Soft Calming Music">Sound</button>
+        <button class="header-button" id="openChapters" onclick="if(typeof openChapters==='function')openChapters(event)">Chapters</button>
+        <button class="header-button" id="openSettings" onclick="if(typeof openSettings==='function')openSettings(event)">Settings</button>
+    </div>
+</header>
+
+<main class="full-width-container">
+    <!-- HERO SECTION WITH VISUAL NOVEL COVER & DYNAMIC RESUME BUTTON -->
+    <section class="home-hero" id="home">
+        <div class="hero-bg-glow"></div>
+        <div class="hero-grid-container" style="display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 3rem; align-items: center; width: 100%; max-width: 1200px; text-align: left; margin: 0 auto;">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="pulse-dot"></span> AN URDU NOVEL BY Sadiya Rajpoot
+                </div>
+
+                <h1>Ishq -e- Aatish</h1>
+
+                <div class="hero-divider" style="margin: 0 0 2rem 0;"></div>
+
+                <p class="hero-urdu" style="text-align: right; direction: rtl; margin-bottom: 1.5rem;">عشق آتش ہے، اس میں جل کر ہی انسان کے باطن کے اصل رنگ نکھرتے ہیں۔</p>
+
+                <p class="hero-description" style="margin: 0 0 2.5rem 0;">
+                    The novel follows two people who are very different from each other:
+                </p>
+
+                <div class="hero-buttons" style="justify-content: flex-start; margin-bottom: 2rem;">
+                    <a href="chapter1.html" class="primary-button" id="mainReadBtn">
+                        Begin Reading <span class="arrow">→</span>
+                    </a>
+                    <button class="secondary-button" id="exploreIndexBtn" onclick="openChapters(event)">
+                        Explore Index (30 Chapters)
+                    </button>
+                </div>
+
+                <!-- Dynamic Last Read Resume Bar -->
+                <div class="resume-reading-bar" id="resumeBar" style="display: none; margin-bottom: 2rem;">
+                    <span>🔖 Continue from where you left:</span>
+                    <a href="chapter1.html" id="resumeLink">Chapter 01 — Ek Khwaab</a>
+                </div>
+
+                <div class="hero-meta" style="justify-content: flex-start; gap: 3rem; margin: 0; padding-top: 1.8rem;">
+                    <div class="meta-item">
+                        <small>AUTHOR</small>
+                        <strong>Sadiya Rajpoot</strong>
+                    </div>
+                    <div class="meta-item">
+                        <small>PUBLISHED</small>
+                        <strong>2024</strong>
+                    </div>
+                    <div class="meta-item">
+                        <small>STATUS</small>
+                        <strong>Complete (30 Chapters)</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3D Visual Book Cover Showcase -->
+            <div class="hero-visual-card">
+                <img src="ishq_aatish.jpg" alt="Ishq_e_aatish Novel Cover" style="width: 100%; border-radius: 16px; border: 1px solid var(--border-color); box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 40px var(--accent-glow); transform: perspective(1000px) rotateY(-6deg); transition: transform 0.5s ease;">
+            </div>
+        </div>
+    </section>
+
+    <!-- SYNOPSIS & PROGRESS TRACKER -->
+    <section class="content-section" id="about">
+        <div class="section-heading">
+            <span>The Core Story</span>
+            <h2>Beneath The Veil Of Silence</h2>
+        </div>
+
+        <div class="synopsis-grid">
+            <div class="synopsis-badge">01</div>
+            <div class="synopsis-text">
+                <p>
+"Ishq-e-Aatish" is a profound journey of faith, identity, guidance, and transformation. It is a story about two souls walking through very different paths — one searching for truth, and the other searching for meaning in a life that seems to have everything except peace.</p>
+
+
+<p>
+At its heart are Maliha and Wajdan Mustafa — two individuals whose lives reveal two different sides of the search for purpose. Maliha's journey is shaped by faith, sacrifice, and the courage to stand by what she believes is true. Wajdan's journey begins with extraordinary intelligence but an emptiness that knowledge alone cannot fill.</p>
+              
+                <p class="urdu-quote-inline">
+ہر سفر منزل کی تلاش نہیں ہوتا، کچھ سفر انسان کو خود اُس کی پہچان تک لے جاتے ہیں۔                </p>
+
+
+<p>Not every journey is a search for a destination. Some journeys lead a person to discover who they truly are.The story explores the distance between knowing and understanding, believing and living, and possessing everything yet finding nothing that brings peace.
+It is about the questions that remain unanswered, the choices that demand sacrifice, and the moments that quietly transform a person's entire understanding of life.
+
+Because sometimes, guidance does not arrive when we are looking for it. It finds us when we are finally ready to understand it.
+
+Ishq-e-Aatish is ultimately a story of <span class="vocab-word" data-meaning="the guidance that leads a person toward truth and the right path.">Hidayah</span>, repentance, sacrifice, love, and the transformation of a lost soul into one that finally discovers its purpose.</p>
+
+                <p>
+                    Every meeting leaves behind a question.
+                    Every silence carries an answer.
+                    And every veil hides a world that not everyone is meant to see.
+                </p>
+                <p>
+                    Because sometimes, the deepest stories are not told through words. They exist in lowered gazes, unspoken feelings, restrained emotions, and the courage to remain true to one's values when no one is watching.
+                </p>
+                </div>
+        </div>
+
+        <!-- Novel Progress Bar -->
+        <div class="progress-box">
+            <div class="progress-info">
+                <span>Novel Completion Status</span>
+                <strong>100% Complete (All 30 Chapters Available)</strong>
+            </div>
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill" style="width: 100%;"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT THE AUTHOR SECTION -->
+    <section class="content-section" id="author">
+        <div class="section-heading">
+            <span>The Mind Behind The Novel</span>
+            <h2>About The Author</h2>
+        </div>
+
+        <div class="author-card-wrapper">
+            <div class="author-card">
+                <div class="author-badge">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M12 20h9"></path>
+                        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                    </svg>
+                </div>
+
+                <div class="author-info">
+                    <h3>Sadiya Rajpoot
+</h3>
+                    <span class="author-tagline">Writer & Storyteller</span>
+
+                    <div class="author-bio">
+                        <p>
+                           Sadiya Rajpoot is one of the most prominent contemporary Urdu fiction writers from Pakistan. She is widely known for writing stories that combine spirituality, human psychology, relationships, faith, and social realities.
+                        </p>
+                        <p>
+                            Her writing often focuses on characters who experience deep internal conflicts and are forced to question their beliefs, choices, relationships, and purpose in life. Rather than presenting faith only as a background element, she frequently makes it an important part of a character's personal transformation.Among her most recognised works is Ishq-e-Aatish, a novel that brought together themes of faith, guidance, sacrifice, love, and spiritual transformation through the journeys of Maliha and Wajdan Mustafa.
+
+
+                        </p>
+                        <p>
+                            Her other notable works include Aab-e-Hayat, Zindagi Gulzar Hai, La-Hasil, and Amarbail.
+What distinguishes Sadiya Rajpoot's writing is her ability to combine emotion with reflection. Her stories often leave readers not only thinking about the characters, but also questioning their own understanding of faith, purpose, relationships, and life.
+
+Her Literary Identity
+
+Faith — Spirituality is often central to her characters' journeys.
+Psychology — Her characters experience complex internal struggles.
+Relationships — Family, love, sacrifice, and human connection frequently shape the narrative.
+Transformation — Her stories often focus on how difficult experiences change a person from within.
+
+
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CHARACTERS & INTERACTIVE MAP -->
+    <section class="content-section" id="characters">
+        <div class="section-heading">
+            <span>Protagonists & Dynamics</span>
+            <h2>Characters & Souls</h2>
+        </div>
+
+        <div class="character-grid">
+            <article class="character-card">
+                <div class="character-card-header">
+                    <div class="character-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    </div>
+                    <span class="character-number">01</span>
+                </div>
+                <h3>Wajdan Mustafa</h3>
+                <p>Wajdan Mustafa is one of the most complex and memorable characters in Ishq-e-Aatish. He is exceptionally intelligent, gifted, and intellectually far ahead of those around him. Yet beneath that intelligence lies a deep sense of emptiness and confusion.
+
+Wajdan has the ability to understand difficult things, but he struggles to understand himself and the purpose of his existence. His intelligence initially becomes a source of arrogance and emotional distance. He questions almost everything and finds it difficult to accept answers simply because society or tradition provides them.
+
+His journey is therefore not simply about becoming a better person. It is about discovering meaning, confronting his own weaknesses, and moving from intellectual knowledge toward spiritual understanding.
+
+اس کے پاس سوال بہت تھے، مگر سکون کا جواب نہیں تھا۔
+
+He had countless questions, but no answer that could give him peace.
+
+Wajdan's transformation is one of the central elements of the novel. His character demonstrates that intelligence can explain many things, but it cannot always provide purpose, peace, or guidance.</p>
+            </article>
+
+            <article class="character-card">
+                <div class="character-card-header">
+                    <div class="character-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 1-3-3.87"></path><path d="M4 21v-2a4 4 0 0 1 3-3.87"></path><circle cx="12" cy="7" r="4"></circle><path d="M12 11v10"></path></svg>
+                    </div>
+                    <span class="character-number">02</span>
+                </div>
+                <h3>Maliha</h3>
+                <p>Maliha represents faith, conviction, courage, and sacrifice. Her journey is fundamentally connected to her search for truth and her determination to remain loyal to her beliefs, even when doing so becomes extremely difficult.
+
+She is not a character whose strength comes from being loud or powerful. Her strength is found in her patience, restraint, faith, and ability to endure.
+
+Maliha faces situations where choosing what she believes is right comes at a significant personal cost. She has to confront fear, uncertainty, family pressure, and loneliness while holding firmly to her convictions.
+
+وہ خاموش تھی، مگر اس کی خاموشی کمزوری نہیں تھی؛ وہ اپنے یقین کی آواز تھی۔
+
+She was silent, but her silence was not weakness; it was the voice of her conviction.
+
+Maliha's character shows that faith is not merely something a person claims to possess. True conviction is tested when holding on to it becomes difficult.</p>
+            </article>
+        </div>
+
+        <!-- Character Relationship Map -->
+        <div class="rel-map-wrapper">
+            <h3>Character Relationship Web</h3>
+            <div class="rel-map">
+                <div class="rel-node">Wajdan Mustafa</div>
+                <div class="rel-line">
+                    <span>Love, Faith & Sacrifice</span>
+                </div>
+                <div class="rel-node">Maliha
+</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MOODBOARD & VISUAL GALLERY -->
+    <section class="content-section" id="gallery">
+        <div class="section-heading">
+            <span>VISUAL ATMOSPHERE</span>
+            <h2>Aesthetic Moodboard</h2>
+        </div>
+
+        <div class="moodboard-grid">
+            <div class="mood-card m-1">
+                <div class="mood-card-content">
+                    <span class="mood-title">The Quiet Prayer</span>
+                    <span class="mood-sub">Faith & Surrender</span>
+                </div>
+            </div>
+            <div class="mood-card m-2">
+                <div class="mood-card-content">
+                    <span class="mood-title">The Open Road</span>
+                    <span class="mood-sub">Searching for Truth</span>
+                </div>
+            </div>
+            <div class="mood-card m-3">
+                <div class="mood-card-content">
+                    <span class="mood-title">The Old Pages</span>
+                    <span class="mood-sub">Questions & Knowledge</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- QUOTES WITH ONE-CLICK SHARE -->
+    <section class="content-section" id="quotes">
+        <div class="section-heading">
+            <span>Poetic Expressions</span>
+            <h2>Quotes & Shareable Shayari</h2>
+        </div>
+
+   <div class="quotes-grid">
+    <blockquote class="quote-card">
+        <p>کبھی خود سے بھی ملاقات کر لیا کرو،<br>آئینہ ہر راز نہیں بتایا کرتا۔</p>
+        <button class="share-btn" onclick="shareQuote('کبھی خود سے بھی ملاقات کر لیا کرو، آئینہ ہر راز نہیں بتایا کرتا۔')">Share on WhatsApp 💬</button>
+    </blockquote>
+    <blockquote class="quote-card">
+        <p>راستے بدل جائیں تو منزل نہیں بدلتی،<br>نیت صاف ہو تو دعا کبھی خالی نہیں جاتی۔</p>
+        <button class="share-btn" onclick="shareQuote('راستے بدل جائیں تو منزل نہیں بدلتی، نیت صاف ہو تو دعا کبھی خالی نہیں جاتی۔')">Share on WhatsApp 💬</button>
+    </blockquote>
+</div>
+
+    <!-- READER REVIEWS CAROUSEL -->
+    <section class="content-section">
+        <div class="section-heading">
+            <span>Reader Appreciations</span>
+            <h2>What Readers Say</h2>
+        </div>
+
+        <div class="reviews-carousel">
+            <div class="review-card active">
+                <div class="stars">★★★★★</div>
+                <p>"It made me look beyond intelligence, success, and appearances — and search for something deeper within"</p>
+                <strong>— Sarah M.</strong>
+            </div>
+            <div class="review-card">
+                <div class="stars">★★★★★</div>
+                <p>"Wajdan’s transformation is not just a change in character; it feels like a journey from being lost to finally finding direction."</p>
+                <strong>— Rayan K.</strong>
+            </div>
+        </div>
+    </section>
+
+    <!-- COMMUNITY POLL & DISCUSSION -->
+    <section class="content-section" id="community">
+        <div class="section-heading">
+            <span>Interactive Space</span>
+            <h2>Community Poll & Discussion</h2>
+        </div>
+
+        <!-- Reader Poll -->
+        <div class="poll-wrapper">
+            <h3>Weekly Question: What defines character best?</h3>
+            <div class="poll-options">
+                <button class="poll-btn" onclick="vote(this, 'Silence & Patience (Sabr)')">Silence & Patience (Sabr)</button>
+                <button class="poll-btn" onclick="vote(this, 'Words & Expression')">Words & Expression</button>
+                <button class="poll-btn" onclick="vote(this, 'Boundaries & Dignity (Haya)')">Boundaries & Dignity (Haya)</button>
+            </div>
+            <small id="pollResult" class="poll-result-text"></small>
+        </div>
+
+        <!-- Comment Box -->
+        <div class="comment-box-wrapper" style="margin-top: 3rem;">
+            <form id="commentForm" class="comment-form" onsubmit="return handleCommentSubmit(event)">
+                <div class="form-row">
+                    <input type="text" id="reviewerName" name="name" placeholder="Your Name" required>
+                    <input type="email" id="reviewerEmail" name="email" placeholder="Your Email (Optional)">
+                </div>
+                <textarea id="reviewerMessage" name="message" rows="4" placeholder="Share your thoughts or feedback about the novel..." required></textarea>
+                <button type="button" onclick="handleCommentSubmit(event)" class="primary-button submit-btn">Post Comment</button>
+            </form>
+
+            <div class="comments-list" id="commentsList">
+                <div class="comment-item">
+                    <div class="comment-header">
+                        <strong>Aamina.</strong>
+                    </div>
+                    <p>A story that changed the way I look at faith, purpose, and life.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-title">Ishq -e- Aatish</div>
+        <p>Written by Sadiya Rajpoot · 2024 · All Rights Reserved</p>
+    </footer>
+</main>
+
+<!-- CHAPTER DRAWER -->
+<div class="chapter-drawer" id="chapterDrawer">
+    <div class="drawer-header">
+        <h3>Chapters Index (30 Chapters)</h3>
+        <button id="closeChapters" onclick="if(typeof closeAllDrawers==='function')closeAllDrawers()">&times;</button>
+    </div>
+    <div class="drawer-content">
+        <a href="chapter1.html" class="chapter-link"><span>01</span> <div><strong>Chapter 01</strong></div></a>
+        <a href="chapter2.html" class="chapter-link"><span>02</span> <div><strong>Chapter 02</strong></div></a>
+        <a href="chapter3.html" class="chapter-link"><span>03</span> <div><strong>Chapter 03</strong></div></a>
+        <a href="chapter4.html" class="chapter-link"><span>04</span> <div><strong>Chapter 04</strong></div></a>
+        <a href="chapter5.html" class="chapter-link"><span>05</span> <div><strong>Chapter 05</strong></div></a>
+        <a href="chapter6.html" class="chapter-link"><span>06</span> <div><strong>Chapter 06</strong></div></a>
+        <a href="chapter7.html" class="chapter-link"><span>07</span> <div><strong>Chapter 07</strong></div></a>
+        <a href="chapter8.html" class="chapter-link"><span>08</span> <div><strong>Chapter 08</strong></div></a>
+        <a href="chapter9.html" class="chapter-link"><span>09</span> <div><strong>Chapter 09</strong></div></a>
+        <a href="chapter10.html" class="chapter-link"><span>10</span> <div><strong>Chapter 10</strong></div></a>
+        <a href="chapter11.html" class="chapter-link"><span>11</span> <div><strong>Chapter 11</strong></div></a>
+        <a href="chapter12.html" class="chapter-link"><span>12</span> <div><strong>Chapter 12</strong></div></a>
+        <a href="chapter13.html" class="chapter-link"><span>13</span> <div><strong>Chapter 13</strong></div></a>
+        <a href="chapter14.html" class="chapter-link"><span>14</span> <div><strong>Chapter 14</strong></div></a>
+        <a href="chapter15.html" class="chapter-link"><span>15</span> <div><strong>Chapter 15</strong></div></a>
+        <a href="chapter16.html" class="chapter-link"><span>16</span> <div><strong>Chapter 16</strong></div></a>
+        <a href="chapter17.html" class="chapter-link"><span>17</span> <div><strong>Chapter 17</strong></div></a>
+        <a href="chapter18.html" class="chapter-link"><span>18</span> <div><strong>Chapter 18</strong></div></a>
+        <a href="chapter19.html" class="chapter-link"><span>19</span> <div><strong>Chapter 19</strong></div></a>
+        <a href="chapter20.html" class="chapter-link"><span>20</span> <div><strong>Chapter 20</strong></div></a>
+        <a href="chapter21.html" class="chapter-link"><span>21</span> <div><strong>Chapter 21</strong></div></a>
+        <a href="chapter22.html" class="chapter-link"><span>22</span> <div><strong>Chapter 22</strong></div></a>
+        <a href="chapter23.html" class="chapter-link"><span>23</span> <div><strong>Chapter 23</strong></div></a>
+        <a href="chapter24.html" class="chapter-link"><span>24</span> <div><strong>Chapter 24</strong></div></a>
+        <a href="chapter25.html" class="chapter-link"><span>25</span> <div><strong>Chapter 25</strong></div></a>
+        <a href="chapter26.html" class="chapter-link"><span>26</span> <div><strong>Chapter 26</strong></div></a>
+        <a href="chapter27.html" class="chapter-link"><span>27</span> <div><strong>Chapter 27</strong></div></a>
+        <a href="chapter28.html" class="chapter-link"><span>28</span> <div><strong>Chapter 28</strong></div></a>
+        <a href="chapter29.html" class="chapter-link"><span>29</span> <div><strong>Chapter 29</strong></div></a>
+        <a href="chapter30.html" class="chapter-link"><span>30</span> <div><strong>Chapter 30</strong></div></a>
+    </div>
+</div>
+    <div class="drawer-content">
+        <a href="chapter1.html" class="chapter-link"><span>01</span> <div><strong>Chapter 01</strong></div></a>
+        <a href="chapter2.html" class="chapter-link"><span>02</span> <div><strong>Chapter 02</strong></div></a>
+        <a href="chapter3.html" class="chapter-link"><span>03</span> <div><strong>Chapter 03</strong></div></a>
+        <a href="chapter4.html" class="chapter-link"><span>04</span> <div><strong>Chapter 04</strong></div></a>
+        <a href="chapter5.html" class="chapter-link"><span>05</span> <div><strong>Chapter 05</strong></div></a>
+        <a href="chapter6.html" class="chapter-link"><span>06</span> <div><strong>Chapter 06</strong></div></a>
+        <a href="chapter7.html" class="chapter-link"><span>07</span> <div><strong>Chapter 07</strong></div></a>
+        <a href="chapter8.html" class="chapter-link"><span>08</span> <div><strong>Chapter 08</strong></div></a>
+        <a href="chapter9.html" class="chapter-link"><span>09</span> <div><strong>Chapter 09</strong></div></a>
+        <a href="chapter10.html" class="chapter-link"><span>10</span> <div><strong>Chapter 10</strong></div></a>
+        <a href="chapter11.html" class="chapter-link"><span>11</span> <div><strong>Chapter 11</strong></div></a>
+        <a href="chapter12.html" class="chapter-link"><span>12</span> <div><strong>Chapter 12</strong></div></a>
+        <a href="chapter13.html" class="chapter-link"><span>13</span> <div><strong>Chapter 13</strong></div></a>
+        <a href="chapter14.html" class="chapter-link"><span>14</span> <div><strong>Chapter 14</strong></div></a>
+        <a href="chapter15.html" class="chapter-link"><span>15</span> <div><strong>Chapter 15</strong></div></a>
+        <a href="chapter16.html" class="chapter-link"><span>16</span> <div><strong>Chapter 16</strong></div></a>
+        <a href="chapter17.html" class="chapter-link"><span>17</span> <div><strong>Chapter 17</strong></div></a>
+        <a href="chapter18.html" class="chapter-link"><span>18</span> <div><strong>Chapter 18</strong></div></a>
+        <a href="chapter19.html" class="chapter-link"><span>19</span> <div><strong>Chapter 19</strong></div></a>
+        <a href="chapter20.html" class="chapter-link"><span>20</span> <div><strong>Chapter 20</strong></div></a>
+        <a href="chapter21.html" class="chapter-link"><span>21</span> <div><strong>Chapter 21</strong></div></a>
+        <a href="chapter22.html" class="chapter-link"><span>22</span> <div><strong>Chapter 22</strong></div></a>
+        <a href="chapter23.html" class="chapter-link"><span>23</span> <div><strong>Chapter 23</strong></div></a>
+        <a href="chapter24.html" class="chapter-link"><span>24</span> <div><strong>Chapter 24</strong></div></a>
+        <a href="chapter25.html" class="chapter-link"><span>25</span> <div><strong>Chapter 25</strong></div></a>
+        <a href="chapter26.html" class="chapter-link"><span>26</span> <div><strong>Chapter 26</strong></div></a>
+        <a href="chapter27.html" class="chapter-link"><span>27</span> <div><strong>Chapter 27</strong></div></a>
+        <a href="chapter28.html" class="chapter-link"><span>28</span> <div><strong>Chapter 28</strong></div></a>
+        <a href="chapter29.html" class="chapter-link"><span>29</span> <div><strong>Chapter 29</strong></div></a>
+        <a href="chapter30.html" class="chapter-link"><span>30</span> <div><strong>Chapter 30</strong></div></a>
+    </div>
+</div>
+    <div class="drawer-content">
+        <a href="chapter1.html" class="chapter-link"><span>01</span> <div><strong>Chapter 01</strong></div></a>
+        <a href="chapter2.html" class="chapter-link"><span>02</span> <div><strong>Chapter 02</strong></div></a>
+        <a href="chapter3.html" class="chapter-link"><span>03</span> <div><strong>Chapter 03</strong></div></a>
+        <a href="chapter4.html" class="chapter-link"><span>04</span> <div><strong>Chapter 04</strong></div></a>
+        <a href="chapter5.html" class="chapter-link"><span>05</span> <div><strong>Chapter 05</strong></div></a>
+        <a href="chapter6.html" class="chapter-link"><span>06</span> <div><strong>Chapter 06</strong></div></a>
+        <a href="chapter7.html" class="chapter-link"><span>07</span> <div><strong>Chapter 07</strong></div></a>
+        <a href="chapter8.html" class="chapter-link"><span>08</span> <div><strong>Chapter 08</strong></div></a>
+        <a href="chapter9.html" class="chapter-link"><span>09</span> <div><strong>Chapter 09</strong></div></a>
+        <a href="chapter10.html" class="chapter-link"><span>10</span> <div><strong>Chapter 10</strong></div></a>
+        <a href="chapter11.html" class="chapter-link"><span>11</span> <div><strong>Chapter 11</strong></div></a>
+        <a href="chapter12.html" class="chapter-link"><span>12</span> <div><strong>Chapter 12</strong></div></a>
+        <a href="chapter13.html" class="chapter-link"><span>13</span> <div><strong>Chapter 13</strong></div></a>
+        <a href="chapter14.html" class="chapter-link"><span>14</span> <div><strong>Chapter 14</strong></div></a>
+        <a href="chapter15.html" class="chapter-link"><span>15</span> <div><strong>Chapter 15</strong></div></a>
+        <a href="chapter16.html" class="chapter-link"><span>16</span> <div><strong>Chapter 16</strong></div></a>
+        <a href="chapter17.html" class="chapter-link"><span>17</span> <div><strong>Chapter 17</strong></div></a>
+        <a href="chapter18.html" class="chapter-link"><span>18</span> <div><strong>Chapter 18</strong></div></a>
+        <a href="chapter19.html" class="chapter-link"><span>19</span> <div><strong>Chapter 19</strong></div></a>
+        <a href="chapter20.html" class="chapter-link"><span>20</span> <div><strong>Chapter 20</strong></div></a>
+        <a href="chapter21.html" class="chapter-link"><span>21</span> <div><strong>Chapter 21</strong></div></a>
+        <a href="chapter22.html" class="chapter-link"><span>22</span> <div><strong>Chapter 22</strong></div></a>
+        <a href="chapter23.html" class="chapter-link"><span>23</span> <div><strong>Chapter 23</strong></div></a>
+        <a href="chapter24.html" class="chapter-link"><span>24</span> <div><strong>Chapter 24</strong></div></a>
+        <a href="chapter25.html" class="chapter-link"><span>25</span> <div><strong>Chapter 25</strong></div></a>
+        <a href="chapter26.html" class="chapter-link"><span>26</span> <div><strong>Chapter 26</strong></div></a>
+        <a href="chapter27.html" class="chapter-link"><span>27</span> <div><strong>Chapter 27</strong></div></a>
+        <a href="chapter28.html" class="chapter-link"><span>28</span> <div><strong>Chapter 28</strong></div></a>
+        <a href="chapter29.html" class="chapter-link"><span>29</span> <div><strong>Chapter 29</strong></div></a>
+        <a href="chapter30.html" class="chapter-link"><span>30</span> <div><strong>Chapter 30</strong></div></a>
+    </div>
+</div>
+
+<!-- CONTACT MODAL -->
+<div class="contact-modal" id="contactModal">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3>Get In Touch</h3>
+            <button id="closeContact" onclick="closeAllDrawers()">×</button>
+        </div>
+        <form id="contactForm">
+            <input type="hidden" name="access_key" value="78b08615-65ca-4c89-a320-b21b236bba26">
+            <input type="text" id="contactName" name="name" placeholder="Your Name" required>
+            <input type="email" id="contactEmail" name="email" placeholder="Your Email" required>
+            <textarea id="contactMessage" name="message" rows="4" placeholder="Your Message or Query..." required></textarea>
+            <button type="submit" class="primary-button" style="width: 100%;">Send Message</button>
+        </form>
+    </div>
+</div>
+
+<div class="settings-overlay" id="settingsOverlay" onclick="closeAllDrawers()"></div>
+</body>
+</html>
