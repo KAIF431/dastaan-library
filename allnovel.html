@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dastaan | Sukoon-e-Dil | Elite Library</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;1,400&family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --deep-green: #032219;
+            --vintage-gold: #c5a059;
+            --soft-cream: #f4eee0;
+            --bg-color: #032219;
+            --text-color: #f4eee0;
+            --card-bg: rgba(255, 255, 255, 0.02);
+            --nav-bg: rgba(3, 34, 25, 0.85);
+            --border-color: rgba(197, 160, 89, 0.1);
+        }
+
+        [data-theme="light"] {
+            --bg-color: #f4eee0;
+            --text-color: #032219;
+            --card-bg: rgba(0, 0, 0, 0.04);
+            --nav-bg: rgba(244, 238, 224, 0.85);
+            --border-color: rgba(3, 34, 25, 0.1);
+        }
+
+        html { scroll-behavior: smooth; }
+        body { 
+            background-color: var(--bg-color); 
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-color);
+            overflow-x: hidden;
+            cursor: none; 
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+        .serif { font-family: 'Bodoni Moda', serif; }
+        .gold-text { color: var(--vintage-gold); }
+        
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-color); }
+        ::-webkit-scrollbar-thumb { background: var(--vintage-gold); border-radius: 10px; }
+
+        #scrollProgress {
+            position: fixed; top: 0; left: 0; height: 3px;
+            background: var(--vintage-gold); z-index: 1000;
+            width: 0%; transition: width 0.1s ease;
+            box-shadow: 0 0 15px var(--vintage-gold);
+        }
+
+        .announcement-bar {
+            background: var(--vintage-gold);
+            color: var(--deep-green);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-align: center;
+            padding: 8px 0;
+            text-transform: uppercase;
+        }
+
+        .cursor-dot {
+            width: 8px; height: 8px; background: var(--vintage-gold);
+            position: fixed; pointer-events: none; border-radius: 50%;
+            z-index: 9999; transform: translate(-50%, -50%);
+        }
+        .cursor-outline {
+            width: 40px; height: 40px; border: 1px solid var(--vintage-gold);
+            position: fixed; pointer-events: none; border-radius: 50%;
+            z-index: 9998; transform: translate(-50%, -50%);
+            transition: all 0.15s ease-out;
+        }
+
+        .reveal {
+            opacity: 0; transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .reveal.active {
+            opacity: 1; transform: translateY(0);
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .hero-animate { animation: fadeInUp 1.2s ease-out forwards; }
+
+        nav {
+            position: sticky; top: 0; z-index: 100;
+            background: var(--nav-bg);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.4s ease;
+        }
+        nav.scrolled {
+            padding: 10px 40px;
+            border-bottom: 1px solid var(--vintage-gold);
+        }
+
+        .novel-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .novel-card:hover {
+            border: 1px solid var(--vintage-gold);
+            transform: translateY(-12px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        .novel-card img {
+            width: 100%; height: 380px; object-fit: cover;
+            filter: grayscale(100%); opacity: 0.75; transition: 0.8s;
+        }
+        .novel-card:hover img { filter: grayscale(0%); opacity: 1; transform: scale(1.08); }
+
+        .btn-elite {
+            position: relative; display: inline-block; padding: 12px 30px;
+            border: 1px solid var(--vintage-gold); color: var(--vintage-gold);
+            text-transform: uppercase; font-size: 10px; font-weight: 700;
+            letter-spacing: 2px; overflow: hidden; transition: 0.5s; z-index: 1;
+            width: 100%; text-align: center; background: transparent;
+        }
+        .btn-elite:hover { color: var(--deep-green); }
+        .btn-elite::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: var(--vintage-gold); transition: 0.5s; z-index: -1;
+        }
+        .btn-elite:hover::before { left: 0; }
+
+        .cat-btn.active {
+            background: var(--vintage-gold);
+            color: var(--deep-green);
+            font-weight: 700;
+        }
+
+        #backToTop {
+            position: fixed; bottom: 30px; right: 30px;
+            width: 50px; height: 50px;
+            background: var(--vintage-gold); color: var(--deep-green);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; opacity: 0; visibility: hidden; transition: 0.4s; z-index: 500;
+        }
+        #backToTop.show { opacity: 1; visibility: visible; }
+
+        #themeToggle {
+            position: fixed; bottom: 30px; left: 30px;
+            width: 50px; height: 50px;
+            background: var(--vintage-gold); color: var(--deep-green);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; z-index: 500; border: none; font-size: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: 0.3s;
+        }
+        #themeToggle:hover { transform: scale(1.1); }
+        
+        .newsletter-input {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid var(--border-color);
+            padding: 10px 0;
+            width: 100%;
+            color: var(--text-color);
+            outline: none;
+            transition: 0.3s;
+        }
+        .newsletter-input:focus { border-bottom: 1px solid var(--vintage-gold); }
+
+        @media (max-width: 768px) {
+            .cursor-dot, .cursor-outline { display: none; }
+            body { cursor: auto; }
+            .text-7xl { font-size: 3.5rem; line-height: 1; }
+            .text-9xl { font-size: 4.5rem; line-height: 1; }
+            .novel-card img { height: 260px; }
+            #themeToggle { left: 20px; bottom: 20px; width: 45px; height: 45px; }
+            #backToTop { right: 20px; bottom: 20px; width: 45px; height: 45px; }
+        }
+    </style>
+    <link rel="stylesheet" href="theme.css">
+</head>
+<body class="antialiased">
+
+    <div class="announcement-bar">New Release: Parda aur Mijaaz Part 2 will come soon in library</div>
+    
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-outline" id="cursorOutline"></div>
+    <div id="scrollProgress"></div>
+
+    <nav class="py-5 px-10 flex justify-between items-center" id="mainNav">
+        <div class="text-3xl serif italic gold-text tracking-tighter">Dastaan</div>
+        
+        <div class="md:hidden text-2xl gold-text cursor-pointer" id="mobileMenuBtn">☰</div>
+
+        <div class="hidden md:flex space-x-12 text-[10px] tracking-[0.4em] uppercase opacity-60" id="navLinks">
+            <a href="#novelGrid" class="hover:gold-text hover:opacity-100 transition">Library</a>
+            <a href="#authors-section" class="hover:gold-text hover:opacity-100 transition">Authors</a>
+            <a href="#stats-section" class="hover:gold-text hover:opacity-100 transition">Our Impact</a>
+            <a href="#" id="pardaHeaderSettingsBtn" onclick="window.openSettingsModal(event)" class="hover:gold-text hover:opacity-100 transition cursor-pointer">⚙️ Settings</a>
+        </div>
+    </nav>
+
+    <section class="max-w-6xl mx-auto py-32 px-6 text-center hero-animate">
+        <span class="text-[10px] uppercase tracking-[0.8em] gold-text opacity-70 mb-4 block">Est. 2025 | Premium Urdu Library</span>
+        <h1 class="text-7xl md:text-9xl serif italic mb-8">Lafzon ki <span class="gold-text">Chashni</span></h1>
+        <p class="max-w-2xl mx-auto opacity-50 font-light leading-relaxed text-sm md:text-base">
+            Salar ki hidayat se Jihan ki maseehaai tak—ek aisi munfarid jagah jahan har dastaan aapki rooh ko naye raste dikhayegi.
+        </p>
+    </section>
+
+    <!-- GRAND MASTERPIECE OF THE YEAR FEATURE SHOWCASE -->
+    <section class="max-w-7xl mx-auto px-6 mb-32 reveal">
+        <div class="relative rounded-3xl p-8 md:p-16 border border-gold/30 bg-gradient-to-r from-black/40 via-white/[0.03] to-black/40 backdrop-blur-2xl shadow-[0_0_80px_rgba(0,0,0,0.8)] overflow-hidden group">
+            
+            <!-- Background Ornate Glow -->
+            <div class="absolute -top-24 -left-24 w-96 h-96 bg-gold/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-gold/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="relative z-10 flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+                
+                <!-- 3D FLOATING COVER IMAGE -->
+                <div class="w-64 md:w-80 h-96 md:h-[450px] rounded-2xl overflow-hidden border-2 border-gold/40 shadow-[0_0_50px_rgba(197,160,89,0.3)] transform group-hover:scale-105 group-hover:-rotate-1 transition-all duration-700 flex-shrink-0">
+                    <img src="parda_aur_mijaaz.jpg" alt="Parda aur Mijaaz Masterpiece Cover" class="w-full h-full object-cover">
+                </div>
+
+                <!-- RIGHT CONTENT AREA -->
+                <div class="flex-grow text-center lg:text-left space-y-6">
+                    
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-gold/40 bg-gold/10 text-gold text-[10px] tracking-[0.4em] uppercase font-bold">
+                        <span class="w-2 h-2 rounded-full bg-gold animate-ping"></span>
+                        👑 Masterpiece of the Year • Part 1
+                    </div>
+
+                    <h2 class="text-5xl md:text-7xl serif italic gold-text tracking-tight">Parda aur Mijaaz</h2>
+                    
+                    <p class="text-sm uppercase tracking-[0.3em] opacity-80 font-bold">Author: <strong class="gold-text">Mohammad</strong></p>
+
+                    <blockquote class="text-xl md:text-2xl italic opacity-90 border-l-2 lg:border-l-4 border-gold pl-4 lg:pl-6 py-2 font-serif my-4">
+                        "Parda uska libaas nahi... mijaaz hai."
+                    </blockquote>
+
+                    <p class="text-sm md:text-base opacity-70 leading-relaxed max-w-2xl">
+                        Ek nihayat hi shandar, roohani aur insani mijaaz ke pehlon ko ujaghar karne wali dastaan. Yeh novel insani khuloos, parda-e-haya, aur mijaaz ki tabdeeli ke 12 complete chapters mein phailay roohani safar ko bayan karti hai.
+                    </p>
+
+                    <!-- STATS BADGES -->
+                    <div class="flex flex-wrap gap-4 justify-center lg:justify-start text-xs pt-2">
+                        <span class="px-4 py-2 bg-white/5 border border-white/10 rounded-full font-bold">⭐ 5.0 Rating</span>
+                        <span class="px-4 py-2 bg-white/5 border border-white/10 rounded-full font-bold">📚 12 Complete Chapters</span>
+                        <span class="px-4 py-2 bg-white/5 border border-white/10 rounded-full font-bold">🕊️ Spiritual & Social Drama</span>
+                    </div>
+
+                    <!-- ACTION BUTTONS -->
+                    <div class="pt-6 flex flex-wrap gap-4 justify-center lg:justify-start">
+                        <a href="https://kaif431.github.io/parda-aur-mijaaz" class="px-10 py-4 bg-gold text-black text-xs uppercase tracking-[0.3em] font-bold rounded-full hover:bg-white hover:scale-105 transition-all duration-300 shadow-[0_0_30px_rgba(197,160,89,0.4)]">📖 Read Masterpiece</a>
+                        <a href="https://kaif431.github.io/parda-aur-mijaaz" class="px-10 py-4 border border-gold text-gold text-xs uppercase tracking-[0.3em] font-bold rounded-full hover:bg-gold hover:text-black hover:scale-105 transition-all duration-300">📚 Explore 12 Chapters</a>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="max-w-7xl mx-auto px-6 mb-20 reveal">
+        <div class="flex justify-between items-end border-b border-white/5 pb-6">
+            <div>
+                <h2 class="text-3xl serif italic gold-text">Library Collection</h2>
+                <p class="text-[9px] uppercase tracking-[0.3em] opacity-40">Curated masterpieces for every soul</p>
+            </div>
+            <a href="#novelGrid" class="text-[10px] uppercase tracking-widest gold-text hover:underline">Scroll Down</a>
+        </div>
+    </section>
+
+    <!-- CONTINUE READING AUTO-RESUME BANNER -->
+    <div id="continueReadingBanner" class="hidden max-w-4xl mx-auto mb-10 p-5 border border-gold/40 rounded-2xl bg-gold/10 backdrop-blur-xl text-center flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="text-left">
+            <span class="text-[9px] uppercase tracking-[0.3em] gold-text block font-bold">🔖 Resume Reading</span>
+            <strong id="continueReadingText" class="text-base gold-serif italic">Peer-e-Kamil — Chapter 01 Part 02</strong>
+        </div>
+        <a id="continueReadingBtn" href="#" class="px-8 py-2.5 bg-gold text-black text-xs uppercase tracking-widest font-bold rounded-full hover:bg-white transition flex-shrink-0">Continue →</a>
+    </div>
+
+    <div id="novelGrid" class="max-w-4xl mx-auto text-center mb-20 px-6 reveal">
+        <input type="text" id="searchInput" placeholder="Search a story, find yourself..." 
+        class="w-full p-6 border-b-2 border-vintage-gold/20 bg-transparent text-2xl serif italic text-center outline-none focus:border-vintage-gold transition-all mb-10">
+        
+        <div class="flex flex-wrap justify-center gap-4">
+            <button onclick="filterCategory('all', this)" class="cat-btn active px-8 py-2 border border-white/10 text-[10px] uppercase tracking-widest rounded-full hover:border-vintage-gold transition">📚 All Stories (6)</button>
+            <button onclick="filterCategory('top', this)" class="cat-btn px-8 py-2 border border-white/10 text-[10px] uppercase tracking-widest rounded-full hover:border-vintage-gold transition">🔥 Top Masterpieces</button>
+            <button onclick="filterCategory('classic', this)" class="cat-btn px-8 py-2 border border-white/10 text-[10px] uppercase tracking-widest rounded-full hover:border-vintage-gold transition">📜 Classic Sagas</button>
+        </div>
+    </div>
+
+    <section class="max-w-7xl mx-auto px-6 pb-32">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12" id="mainGrid">
+            <div class="novel-card reveal rounded-xl" data-category="top">
+                <img src="peere_kamil.jpg" alt="PK">
+                <div class="p-10 text-center">
+                    <div class="flex justify-center items-center gap-2 mb-2"><span class="text-[10px] gold-text">★★★★★</span><span class="text-[11px] opacity-40 font-bold">5.0</span></div>
+                    <h3 class="text-3xl serif italic gold-text">Peer-e-Kamil</h3>
+                    <p class="text-[10px] tracking-widest uppercase opacity-40 mt-2 mb-8">Umera Ahmed</p>
+                    <a href="https://kaif431.github.io/Peer--e--Kamil/" class="btn-elite">Read Now</a>
+                </div>
+            </div>
+
+            <div class="novel-card reveal rounded-xl" data-category="top">
+                <img src="parda_aur_mijaaz.jpg" alt="Parda aur Mijaaz">
+                <div class="p-10 text-center">
+                    <div class="flex justify-center items-center gap-2 mb-2"><span class="text-[10px] gold-text">★★★★★</span><span class="text-[11px] opacity-40 font-bold">5.0</span></div>
+                    <h3 class="text-3xl serif italic gold-text">Parda aur Mijaaz</h3>
+                    <p class="text-[10px] tracking-widest uppercase opacity-40 mt-2 mb-8">Mohammad</p>
+                    <a href="https://kaif431.github.io/parda-aur-mijaaz" class="btn-elite">Read Now</a>
+                </div>
+            </div>
+
+            <div class="novel-card reveal rounded-xl" data-category="classic">
+                <img src="aabe-hayat.jpg" alt="AH">
+                <div class="p-10 text-center">
+                    <div class="flex justify-center items-center gap-2 mb-2"><span class="text-[10px] gold-text">★★★★★</span><span class="text-[11px] opacity-40 font-bold">5.0</span></div>
+                    <h3 class="text-3xl serif italic gold-text">Aab-e-Hayat</h3>
+                    <p class="text-[10px] tracking-widest uppercase opacity-40 mt-2 mb-8">Umera Ahmed</p>
+                    <a href="https://kaif431.github.io/Aab--e--Hayat/" class="btn-elite">Read Now</a>
+                </div>
+            </div>
+
+            <div class="novel-card reveal rounded-xl" data-category="classic">
+                <img src="ishq_aatish.jpg" alt="Ishq-e-Aatish">
+                <div class="p-10 text-center">
+                    <div class="flex justify-center items-center gap-2 mb-2"><span class="text-[10px] gold-text">★★★★★</span><span class="text-[11px] opacity-40 font-bold">5.0</span></div>
+                    <h3 class="text-3xl serif italic gold-text">Ishq-e-Aatish</h3>
+                    <p class="text-[10px] tracking-widest uppercase opacity-40 mt-2 mb-8">Sadiya Rajpoot</p>
+                    <a href="ishq-aatish/index.html" class="btn-elite">Read Now</a>
+                </div>
+            </div>
+
+            <div class="novel-card reveal rounded-xl" data-category="classic">
+                <img src="namal.jpg" alt="Namal">
+                <div class="p-10 text-center">
+                    <div class="flex justify-center items-center gap-2 mb-2"><span class="text-[10px] gold-text">★★★★★</span><span class="text-[11px] opacity-40 font-bold">5.0</span></div>
+                    <h3 class="text-3xl serif italic gold-text">Namal</h3>
+                    <p class="text-[10px] tracking-widest uppercase opacity-40 mt-2 mb-8">Nemrah Ahmed</p>
+                    <a href="https://kaif431.github.io/Namal/" class="btn-elite">Read Now</a>
+                </div>
+            </div>
+
+            <div class="novel-card reveal rounded-xl" data-category="classic">
+                <img src="amarbail.jpg" alt="AB">
+                <div class="p-10 text-center">
+                    <div class="flex justify-center items-center gap-2 mb-2"><span class="text-[10px] gold-text">★★★★★</span><span class="text-[11px] opacity-40 font-bold">4.8</span></div>
+                    <h3 class="text-3xl serif italic gold-text">Amar Bail</h3>
+                    <p class="text-[10px] tracking-widest uppercase opacity-40 mt-2 mb-8">Umera Ahmed</p>
+                    <a href="https://kaif431.github.io/Amarbail/" class="btn-elite">Read Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="relative py-48 flex items-center justify-center overflow-hidden border-y border-white/5 bg-black/20">
+        <div class="absolute inset-0 opacity-10 bg-[url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f')] bg-fixed bg-cover bg-center"></div>
+        <div class="relative z-10 text-center px-6">
+            <div class="h-48 flex flex-col justify-center items-center">
+                <p id="quoteText" class="serif text-4xl md:text-6xl italic gold-text mb-6 transition-all duration-1000 opacity-100">"Kitabein bolti hain, bas sunne wala chahiye."</p>
+                <p id="quoteAuthor" class="text-[10px] tracking-[0.6em] uppercase opacity-40">Sukoon-e-Dil ki Talash</p>
+            </div>
+        </div>
+    </section>
+
+<section id="authors-section" class="max-w-7xl mx-auto py-32 px-6 border-t border-white/5 reveal">
+    <div class="text-center mb-24">
+        <h2 class="text-5xl serif italic gold-text">Legends of Storytelling</h2>
+        <div class="w-24 h-[1px] bg-vintage-gold mx-auto mt-6 opacity-30"></div>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        
+        <div class="text-center group cursor-pointer p-6 rounded-2xl hover:bg-white/[0.02] transition-all duration-500" onclick="filterByAuthor('Mohammad')">
+            <div class="w-20 h-20 mx-auto rounded-full border border-vintage-gold/30 flex items-center justify-center mb-6 group-hover:border-vintage-gold group-hover:bg-vintage-gold transition-all duration-700">
+                <span class="serif text-2xl gold-text group-hover:text-deep-green">M</span>
+            </div>
+            <h3 class="text-xl serif italic gold-text mb-3">Mohammad</h3>
+            <p class="text-[8px] tracking-[0.3em] uppercase opacity-40 mb-4 font-bold">Spiritual & Haya Realism</p>
+            <p class="text-[11px] leading-relaxed opacity-50 italic px-2">Author of Parda aur Mijaaz. Master of exploring inner modesty, human temperament, and spiritual self-reformation.</p>
+        </div>
+
+        <div class="text-center group cursor-pointer p-6 rounded-2xl hover:bg-white/[0.02] transition-all duration-500" onclick="filterByAuthor('Umera Ahmed')">
+            <div class="w-20 h-20 mx-auto rounded-full border border-vintage-gold/30 flex items-center justify-center mb-6 group-hover:border-vintage-gold group-hover:bg-vintage-gold transition-all duration-700">
+                <span class="serif text-2xl gold-text group-hover:text-deep-green">U</span>
+            </div>
+            <h3 class="text-xl serif italic gold-text mb-3">Umera Ahmed</h3>
+            <p class="text-[8px] tracking-[0.3em] uppercase opacity-40 mb-4 font-bold">Spiritual Realism</p>
+            <p class="text-[11px] leading-relaxed opacity-50 italic px-2">Master of weaving spirituality into modern life. Her words act as a bridge between the worldly and the divine.</p>
+        </div>
+
+        <div class="text-center group cursor-pointer p-6 rounded-2xl hover:bg-white/[0.02] transition-all duration-500" onclick="filterByAuthor('Nemrah Ahmed')">
+            <div class="w-20 h-20 mx-auto rounded-full border border-vintage-gold/30 flex items-center justify-center mb-6 group-hover:border-vintage-gold group-hover:bg-vintage-gold transition-all duration-700">
+                <span class="serif text-2xl gold-text group-hover:text-deep-green">N</span>
+            </div>
+            <h3 class="text-xl serif italic gold-text mb-3">Nemrah Ahmed</h3>
+            <p class="text-[8px] tracking-[0.3em] uppercase opacity-40 mb-4 font-bold">Intelligence & Mystery</p>
+            <p class="text-[11px] leading-relaxed opacity-50 italic px-2">The architect of complex plots and psychological depth, known for her research-based thrilling narratives.</p>
+        </div>
+
+    </div>
+</section>
+
+    <section id="stats-section" class="max-w-6xl mx-auto py-24 px-6 grid grid-cols-2 md:grid-cols-4 gap-12 text-center reveal">
+        <div><p class="text-4xl gold-text serif mb-2">6</p><p class="text-[9px] tracking-widest uppercase opacity-40">Masterpieces</p></div>
+        <div><p class="text-4xl gold-text serif mb-2">35k</p><p class="text-[9px] tracking-widest uppercase opacity-40">Active Readers</p></div>
+        <div><p class="text-4xl gold-text serif mb-2">24/7</p><p class="text-[9px] tracking-widest uppercase opacity-40">Free Access</p></div>
+        <div><p class="text-4xl gold-text serif mb-2">∞</p><p class="text-[9px] tracking-widest uppercase opacity-40">Endless Sukoon</p></div>
+    </section>
+
+   
+    <footer class="bg-black/40 py-24 px-10 border-t border-white/5">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-16">
+            <div>
+                <h4 class="serif italic text-3xl gold-text mb-6">Dastaan</h4>
+                <p class="text-xs opacity-50 leading-loose">Har lafz mein ek nayi dunya basi hai. Hamara maqsad aap tak Urdu adab ke shahkar pahunchana hai.</p>
+            </div>
+            <div>
+                <h4 class="text-[10px] tracking-[0.4em] uppercase mb-8 gold-text">Quick Navigation</h4>
+                <ul class="text-[10px] space-y-4 opacity-50 uppercase tracking-widest">
+                    <li><a href="index.html" class="hover:gold-text transition">Home</a></li>
+                    <li><a href="#novelGrid" class="hover:gold-text transition">Library</a></li>
+                    <li><a href="#authors-section" class="hover:gold-text transition">Authors</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-[10px] tracking-[0.4em] uppercase mb-8 gold-text">Connect</h4>
+                <div class="flex space-x-6 opacity-50">
+                    <span class="text-xs hover:gold-text cursor-pointer transition">Instagram</span>
+                    <span class="text-xs hover:gold-text cursor-pointer transition">Twitter</span>
+                </div>
+            </div>
+        </div>
+        <div class="mt-20 pt-10 border-t border-white/5 text-center text-[10px] tracking-[0.5em] opacity-30 uppercase">&copy; 2025 Dastaan Sukoon-e-Dil.</div>
+    </footer>
+
+    <button id="themeToggle" title="Toggle Mode">🌓</button>
+    <div id="backToTop">↑</div>
+
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.documentElement;
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        body.setAttribute('data-theme', savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+
+        const dot = document.getElementById("cursorDot");
+        const outline = document.getElementById("cursorOutline");
+        window.addEventListener("mousemove", (e) => {
+            dot.style.left = e.clientX + "px"; dot.style.top = e.clientY + "px";
+            outline.animate({ left: `${e.clientX}px`, top: `${e.clientY}px` }, { duration: 400, fill: "forwards" });
+        });
+
+        function handleScroll() {
+            const winScroll = document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("scrollProgress").style.width = scrolled + "%";
+            const nav = document.getElementById("mainNav");
+            if (winScroll > 50) nav.classList.add("scrolled"); else nav.classList.remove("scrolled");
+            const btt = document.getElementById('backToTop');
+            if (winScroll > 400) btt.classList.add('show'); else btt.classList.remove('show');
+            const reveals = document.querySelectorAll(".reveal");
+            reveals.forEach(r => { if (r.getBoundingClientRect().top < window.innerHeight - 100) r.classList.add("active"); });
+        }
+        window.addEventListener("scroll", handleScroll);
+        window.addEventListener("load", handleScroll);
+
+        let currentCategory = 'all';
+        let favorites = JSON.parse(localStorage.getItem('dastaan_favorites') || '[]');
+
+        function toggleFavorite(filename, btn, e) {
+            if (e) e.stopPropagation();
+            let idx = favorites.indexOf(filename);
+            if (idx > -1) {
+                favorites.splice(idx, 1);
+                btn.innerText = '🤍';
+                btn.title = 'Add to Favorites';
+            } else {
+                favorites.push(filename);
+                btn.innerText = '❤️';
+                btn.title = 'Remove from Favorites';
+            }
+            localStorage.setItem('dastaan_favorites', JSON.stringify(favorites));
+            if (currentCategory === 'favorites') applyFilters();
+        }
+
+        function applyFilters() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.novel-card');
+            cards.forEach(card => {
+                const title = card.querySelector('h3').innerText.toLowerCase();
+                const writer = card.querySelector('p').innerText.toLowerCase();
+                const category = card.getAttribute('data-category');
+                const link = card.querySelector('a')?.getAttribute('href') || '';
+                
+                const matchesSearch = title.includes(query) || writer.includes(query);
+                let matchesCategory = false;
+
+                if (currentCategory === 'all') {
+                    matchesCategory = true;
+                } else if (currentCategory === 'favorites') {
+                    matchesCategory = favorites.includes(link);
+                } else {
+                    matchesCategory = category === currentCategory;
+                }
+
+                card.style.display = (matchesSearch && matchesCategory) ? "flex" : "none";
+            });
+        }
+
+        function filterCategory(cat, btn) {
+            currentCategory = cat;
+            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            applyFilters();
+        }
+
+        document.getElementById('searchInput').addEventListener('input', applyFilters);
+
+        function filterByAuthor(name) {
+            document.getElementById('searchInput').value = name;
+            applyFilters();
+            document.getElementById('novelGrid').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Initialize Continue Reading Banner
+        window.addEventListener('DOMContentLoaded', () => {
+            const lastRead = JSON.parse(localStorage.getItem('dastaan_last_read') || 'null');
+            if (lastRead && lastRead.filename) {
+                const banner = document.getElementById('continueReadingBanner');
+                const text = document.getElementById('continueReadingText');
+                const btn = document.getElementById('continueReadingBtn');
+                if (banner && text && btn) {
+                    text.innerText = `${lastRead.title} — Chapter ${lastRead.ch < 10 ? '0' + lastRead.ch : lastRead.ch} ${lastRead.ptTitle}`;
+                    btn.href = `${lastRead.filename}?ch=${lastRead.ch}&pt=${lastRead.pt}`;
+                    banner.classList.remove('hidden');
+                }
+            }
+        });
+        document.getElementById('backToTop').addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+
+        const menuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+        menuBtn.addEventListener('click', () => { navLinks.classList.toggle('hidden'); navLinks.classList.toggle('flex'); navLinks.classList.toggle('flex-col'); navLinks.classList.toggle('absolute'); navLinks.classList.toggle('top-full'); navLinks.classList.toggle('left-0'); navLinks.classList.toggle('w-full'); navLinks.classList.toggle('bg-deep-green'); navLinks.classList.toggle('p-6'); navLinks.classList.toggle('items-center'); navLinks.classList.toggle('space-y-6'); });
+    </script>
+    <script src="theme.js"></script>
+</body>
+</html>
